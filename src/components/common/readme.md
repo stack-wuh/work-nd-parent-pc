@@ -9,3 +9,9 @@
 
 ## wrapTop
 > 模块顶部展示
+
+## Search
+> 摘取全部页面Search模块
+
+## Bottom
+> 表格底部分页条
