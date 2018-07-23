@@ -6,6 +6,8 @@ import router from './router'
 
 import {Button} from 'element-ui'
 import '../static/default-theme/index.css'
+import '../static/css/base.less'
+import '../static/css/font/iconfont.css'
 
 Vue.prototype.$ELEMENT = {size:'mini',zIndex:3000}
 
