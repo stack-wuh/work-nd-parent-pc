@@ -6,7 +6,7 @@
     </wrap-top>
     <section class="list">
       <ul>
-        <li v-for="(item,index) in list" :key="index">
+        <li @click="jump2other(item.path)" v-for="(item,index) in list" :key="index">
           <img :src="item.icon" :alt="item.name">
           <span>{{item.name}}</span>
         </li>
@@ -17,8 +17,8 @@
       <span slot="left">教职工信息</span>
     </wrap-top>
     <section class="content">
-      <my-table :info="info"></my-table>
-      <my-bottom  />
+      <my-table :info="info" class="my-table"></my-table>
+      <my-bottom class="my-bottom"  />
     </section>
   </section>
 </template>
@@ -42,18 +42,22 @@ export default {
         {
           name:'考勤管理',
           icon:'../../static/img/list-1.png',
+          path:'/check'
         },
         {
           name:'成绩管理',
           icon:'../../static/img/list-2.png',
+          path:'/grade'
         },
         {
           name:'挂科查询',
-          icon:'../../static/img/list-3.png'
+          icon:'../../static/img/list-3.png',
+          path:'/fails'
         },
         {
           name:'告家长书',
-          icon:'../../static/img/list-4.png'
+          icon:'../../static/img/list-4.png',
+          path:'/letter'
         },
         {
           name:'放假通知',
@@ -93,26 +97,41 @@ export default {
         },
       ]
     }
+  },
+  methods:{
+    jump2other(path){
+      this.$router.push({path:path})
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.father{
-  .list{
-    margin:15px 0;
-    ul{
+.father {
+  .list {
+    margin: 15px 0;
+    ul {
       display: flex;
       flex-flow: row nowrap;
-      justify-content: space-around;      
-      li{
+      justify-content: space-around;
+      li {
         display: flex;
         flex-flow: column wrap;
         align-items: center;
         justify-content: center;
+        img {
+          margin-bottom: 10px;
+          &:hover {
+            cursor: pointer;
+            transform: scale3d(1.1, 1.1, 1.1) translate(-10px);
+            transition: all 0.5s linear;
+          }
+        }
       }
     }
   }
+  .content {
+    padding-bottom: 20px;
+  }
 }
-
 </style>

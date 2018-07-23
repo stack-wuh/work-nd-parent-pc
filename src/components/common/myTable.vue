@@ -2,7 +2,20 @@
   <section class="wrapper">
     <section class="wrap">
       <el-table border stripe :data="info">
-        <el-table-column align="center" v-for="(item,index) in dataList" :key="index" :label="item.key" :prop="item.prop"></el-table-column>
+        <el-table-column v-if="$route.path === '/check'" type="selection" align="center" width='80'></el-table-column>
+        <el-table-column v-if="item.type === 'expand'" type="expand" align='center' v-for="(item,index) in dataList" :key="index" :label="item.key">
+          <template slot-scope="scope">
+            <el-table :data="scope.row.data" border stripe>
+              <el-table-column align="center" v-if="sub.type === 'default'" v-for="(sub,sin) in subDataList" :key="sin" :label="sub.key" :prop="sub.prop"></el-table-column>
+            </el-table>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="item.type === 'default'" align="center" v-for="(item,index) in dataList" :key="index" :label="item.key" :prop="item.prop"></el-table-column>
+        <el-table-column fixed="right" v-if="item.type === 'button'" align='center' v-for="(item,index) in dataList" :key="index" :label="item.key">
+          <template slot-scope="scope">
+              <el-button v-for="(btn,bin) in item.list" :key="bin" :type="btn.type" @click="btn.click">{{btn.text}}</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </section>
   </section>
@@ -20,43 +33,225 @@ export default {
           data:[
             {
               key:'工号',
-              prop:'number'
+              prop:'number',
+              type:'default',
             },
             {
               key:'姓名',
-              prop:'name'
+              prop:'name',
+              type:'default',
             },
             {
               key:'职务',
               prop:'post',
+              type:'default',
             },
             {
               key:'管辖班级',
               prop:'klasses',
+              type:'default',
             },
             {
               key:'联系电话',
               prop:'phone',
+              type:'default',
             },
             {
               key:'QQ',
-              prop:'qq'
+              prop:'qq',
+              type:'default',
             },
             {
               key:'微信',
-              prop:'weixin'
+              prop:'weixin',
+              type:'default',
             },
             {
               key:'邮箱',
-              prop:'email'
+              prop:'email',
+              type:'default',
             },
             {
               key:'办公地址',
-              prop:'location'
+              prop:'location',
+              type:'default',
             }
+          ]
+        },
+        {
+          name:'check',
+          data:[
+            {
+              key:'姓名',
+              prop:'name',
+              type:'default'
+            },
+            {
+              key:'专业班级',
+              prop:'klass',
+              type:'default'
+            },
+            {
+              key:'学号',
+              prop:'number',
+              type:'default'
+            },
+            {
+              key:'考勤类型',
+              prop:'check_type',
+              type:'default'
+            },
+            {
+              key:'迟到',
+              prop:'later',
+              type:'default'
+            },
+            {
+              key:'旷课',
+              prop:'out',
+              type:'default'
+            },
+            {
+              key:'请假',
+              prop:'leave',
+              type:'default'
+            },
+            {
+              key:'出勤率',
+              prop:'check_rota',
+              type:'default'
+            },
+            {
+              key:'操作',
+              type:'button',
+              list:[
+                {
+                  text:'查看',
+                  click:'',
+                  type:'text'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name:'grade',
+          data:[
+            {
+              key:'姓名',
+              prop:'name',
+              type:'default',
+            },
+            {
+              key:'专业班级',
+              prop:'klass',
+              type:'default',
+            },
+            {
+              key:'学号',
+              prop:'number',
+              type:'default',
+            },
+            {
+              key:'平均成绩',
+              prop:'abs',
+              type:'default',
+            },
+            {
+              key:'班级排名',
+              prop:'sort_class',
+              type:'default',
+            },
+            {
+              key:'年级排名',
+              prop:'sort_grade',
+              type:'default',
+            },
+            {
+              key:'所得学分',
+              prop:'total',
+              type:'default',
+            },
+            {
+              key:'挂科门数',
+              prop:'fails',
+              type:'default',
+            },
+            {
+              key:'操作',
+              type:'button',
+              list:[
+                {
+                  text:'编辑',
+                  type:'text',
+                  click:''
+                },
+                {
+                  text:'详情',
+                  type:'text',
+                  click:''
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name:'fails',
+          data:[
+            {
+              key:'',
+              type:'expand',
+            },
+            {
+              key:'姓名',
+              prop:'name',
+              type:'default',
+            },
+            {
+              key:'班级',
+              prop:'klass',
+              type:'default',
+            },
+            {
+              key:'学号',
+              prop:'number',
+              type:'default',
+            },
+            {
+              key:'累计挂科',
+              prop:'total',
+              type:'default',
+            },
           ]
         }
       ],
+      subData:[
+        {
+          name:'fails',
+          data:[
+            {
+              key:'课程名',
+              prop:'classify',
+              type:'default',
+            },
+            {
+              key:'分数',
+              prop:'score',
+              type:'default',
+            },
+            {
+              key:'学分',
+              prop:'credit',
+              type:'default',
+            },
+            {
+              key:'考试时间',
+              prop:'time',
+              type:'default',
+            }
+          ]
+        }
+      ]
     }
   },
   computed:{
@@ -64,7 +259,12 @@ export default {
       return this.$route.name
     },
     dataList(){
-      return this.data.find(item => item.name == this.NAME).data
+      return this.data && this.data.find(item => item.name == this.NAME) 
+                && this.data.find(item => item.name == this.NAME).data
+    },
+    subDataList(){
+      return this.data && this.subData.find(item => item.name == this.NAME) 
+                && this.subData.find(item => item.name == this.NAME).data
     }
   },
   created(){

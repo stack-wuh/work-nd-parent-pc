@@ -7,7 +7,7 @@
       </header>
       <div class="list">
         <ul>
-          <li v-for="(item,index) in list" :class="{'active':index==0}" >{{item.name}}</li>
+          <li @click="jump2other(item.path)" v-for="(item,index) in list" :class="{active: $route.path.indexOf(item.routes) !== -1}" >{{item.name}}</li>
         </ul>
       </div>
     </section>
@@ -21,22 +21,32 @@ export default {
     return {
       list:[
         {
-          name:'首页'
+          name:'首页',
+          path:'index',
+          routes:['/index']
         },
         {
           name:'学生管理'
         },
         {
-          name:'考勤管理'
+          name:'考勤管理',
+          path:'check',
+          routes:['/check']
         },
         {
-          name:'成绩管理'
+          name:'成绩管理',
+          path:'grade',
+          routes:['/grade']
         },
         {
-          name:'挂科记录'
+          name:'挂科记录',
+          path:'fails',
+          routes:['/fails']
         },
         {
-          name:'告家长书'
+          name:'告家长书',
+          path:'letter',
+          routes:['/letter']
         },
         {
           name:'招生简章'
@@ -45,6 +55,13 @@ export default {
           name:'系统设置'
         }
       ]
+    }
+  },
+  methods:{
+    jump2other(path){
+      let reg = /^\/$/
+      path = (path && path.match(reg)) ? '/' + path : path
+      this.$router.push({path:path})
     }
   }
 }

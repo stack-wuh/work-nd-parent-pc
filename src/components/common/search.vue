@@ -2,15 +2,19 @@
   <section class="wrapper">
     <section class="wrap">
       <section class="left">
-        <el-select v-model="major" placeholder="请选择专业">
+        <el-button v-if="item.type === 'button'" v-for="(item,index) in searchList" :key="index">{{item.text}}</el-button>
+        <el-select v-model="major" placeholder="请选择专业" style="width:180px;">
           <el-option label="aaa" value="aaa"></el-option>
           <el-option label="aa1" value="aa1"></el-option>
           <el-option label="aa2" value="aa2"></el-option>
         </el-select>
-        <el-select v-model="klass" placeholder="请选择班级">
+        <el-select v-model="klass" placeholder="请选择班级" style="width:180px;">
           <el-option label="bb1" value="11"></el-option>
           <el-option label="bb2" value="21"></el-option>
           <el-option label="bb3" value="31"></el-option>
+        </el-select>
+        <el-select v-if="item.type === 'select'" v-for="(item,index) in searchList" :placeholder="item.placeholder" :key="index" v-model="item.value" style="width:180px">
+          <el-option v-for="(op,oi) in item.data" :label="op" :value="op" :key="oi"></el-option>
         </el-select>
       </section>
       <section class="right">
@@ -23,6 +27,7 @@
 
 <script>
 export default {
+  props:['type'],
   data(){
     return{
       klass:'',
@@ -85,11 +90,18 @@ export default {
             {
               type:'select',
               placeholder:'出勤率',
-              data:['aa','bb','vv']
+              data:['aa','bb','vv'],
+              value:''
             },
           ]
         }
       ],
+    }
+  },
+  computed:{
+    searchList(){
+      return  this.data && this.data.find(item => item.name === this.type) 
+                  && this.data.find(item => item.name === this.type).list
     }
   }
 }

@@ -3,7 +3,7 @@
     <my-leftmenu class="leftmenu" />
     <section class="main">
       <my-header class="header" />
-      <section class="body">
+      <section class="container">
         <router-view />
       </section>
     </section>
@@ -41,13 +41,14 @@ export default {
     height:100%;
     background-color: #F2F2F2;
     box-sizing: border-box;
-    .body{
+    .container{
       display: flex;
       margin:20px;
       padding:20px;
       height:100%;
       background-color: #fff;
       box-sizing: border-box;
+      overflow-y: scroll;
     }
   }
 }
