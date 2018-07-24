@@ -1,35 +1,34 @@
 <template>
   <section class="father">
     <wrap-top>
-      <span slot="left">告家长书</span>
+      <span slot="left">放假通知</span>
     </wrap-top>
-    <nav>
-      <span :class="{active: view == 'publish'}" @click="view = 'publish'">我要编辑</span>
+    <nav class="nav">
+      <span :class="{active:view == 'publish'}" @click="view = 'publish'">发布通知</span>
       <span :class="{active:view == 'history'}" @click="view = 'history'">历史记录</span>
     </nav>
     <section class="content">
-      <component v-bind:is="view"></component>
+      <component :is="view"></component>
     </section>
-  </section>
+  </section>  
 </template>
 
 
 <script>
 import WrapTop from '@/components/common/wraptop'
-import Publish from '../../components/manageLetter/child/publish'
-import History from '../../components/manageLetter/child/history'
+import Publish from '@/components/manageIndex/child/publish' 
+import History from '@/components/manageLetter/child/history' 
 export default {
   components:{
     WrapTop,
     Publish,
-    History,
+    History
   },
   data(){
     return{
       view:'publish'
     }
-  },
-
+  }
 }
 </script>
 
@@ -37,28 +36,23 @@ export default {
 <style lang="less" scoped>
 @import '../../../static/css/color.less';
 .father{
-  nav{
+  nav.nav{
     display: flex;
     align-items: center;
     justify-content: space-between;
     width:220px;
-    height:40px;
     margin-bottom:20px;
-    border-radius: 6px;
-    border:1px solid #eee;
     span{
       flex:1;
-      height:40px;
-      line-height: 40px;
+      padding:10px 0;
+      border:1px solid @base;
       text-align: center;
-      background-color: #D7D7D7;
-      user-select: none;
       &:hover{
         cursor: pointer;
       }
     }
     span.active{
-      color: #fff;
+      color:#fff;
       background-color: @base;
     }
   }
