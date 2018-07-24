@@ -3,11 +3,18 @@ import Router from 'vue-router'
 
 const Home = resolve => require(['@/components/home'],resolve)
 const Index = resolve => require(['@/components/index'],resolve)
+const LeaveIndex = resolve => require(['@/components/manageIndex/leave'],resolve)
+const SummaryIndex = resolve => require(['@/components/manageIndex/summary'],resolve)
+const MessageIndex = resolve => require(['@/components/manageIndex/message'],resolve)
 const CheckIndex = resolve => require(['@/components/manageCheck/index'],resolve)
 const GradeIndex = resolve => require(['@/components/manageGrade/index'],resolve)
 const FailsIndex = resolve => require(['@/components/manageFails/index'],resolve)
 const LetterIndex = resolve => require(['@/components/manageLetter/index'],resolve)
-const LettetPublish = resolve => require(['@/components/manageLetter/child/publish'],resolve)
+const LetterDetail = resolve => require(['@/components/manageLetter/child/detail'],resolve)
+const GuideIndex = resolve => require(['@/components/manageGuide/index'],resolve)
+const SettingIndex = resolve => require(['@/components/manageSetting/index'],resolve)
+const StudentIndex = resolve => require(['@/components/manageStudent/index'],resolve)
+
 
 Vue.use(Router)
 
@@ -28,6 +35,21 @@ export default new Router({
           path:'/index',
           name:'index',
           component:Index,
+        },
+        {
+          path:'/index/leave',
+          name:'leave',
+          component:LeaveIndex
+        },
+        {
+          path:'/index/summary',
+          name:'summary',
+          component:SummaryIndex
+        },
+        {
+          path:'/index/message',
+          name:'message',
+          component:MessageIndex
         }
       ]
     },
@@ -76,16 +98,49 @@ export default new Router({
           path:'/letter',
           name:'letter',
           component:LetterIndex,
-          redirect:'/letter/publish',
-          children:[
-            {
-              path:'/letter/publish',
-              name:'lettetPublish',
-              component:LettetPublish
-            }
-          ]
+        },
+        {
+          path:'/letter/detail',
+          name:'letterDetail',
+          component:LetterDetail
         }
       ]
     },
+    {
+      path:'/',
+      name:'home',
+      component:Home,
+      children:[
+        {
+          path:'/guide',
+          name:'guide',
+          component:GuideIndex,
+        }
+      ]
+    },
+    {
+      path:'/',
+      name:'home',
+      component:Home,
+      children:[
+        {
+          path:'/setting',
+          name:'setting',
+          component:SettingIndex,
+        }
+      ]
+    },
+    {
+      path:'/',
+      name:'home',
+      component:Home,
+      children:[
+        {
+          path:'/student',
+          name:'student',
+          component:StudentIndex
+        }
+      ]
+    }
   ]
 })

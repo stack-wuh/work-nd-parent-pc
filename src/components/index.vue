@@ -62,14 +62,17 @@ export default {
         {
           name:'放假通知',
           icon:'../../static/img/list-5.png',
+          path:'/index/leave'
         },
         {
           name:'期末总结',
-          icon:'../../static/img/list-6.png'
+          icon:'../../static/img/list-6.png',
+          path:'/index/summary'
         },
         {
           name:'我的消息',
-          icon:'../../static/img/list-7.png'
+          icon:'../../static/img/list-7.png',
+          path:'/index/message'
         }
       ],
       info:[
