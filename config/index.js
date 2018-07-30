@@ -13,7 +13,15 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/adminapi/': {
+        target:'http://192.168.10.122:8080/parents_guide/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/adminapi/': ''
+        }
+      }
+    },
 
     // Various Dev Server settings
     // host: 'localhost', // can be overwritten by process.env.HOST
