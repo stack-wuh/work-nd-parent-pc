@@ -3,15 +3,15 @@
     <wrap-top>
       <span slot="left">成绩管理</span>
       <span slot="right">
-        <el-select v-model="grade" placeholder="请选择学期">
+        <el-select @change="handleChangeYear" v-model="grade" placeholder="请选择学期">
           <el-option label="1212" value="123123"></el-option>
         </el-select>
       </span>
     </wrap-top>
     <search type="grade" />
     <section class="content">
-     <my-table :info="info" />
-     <my-bottom />
+     <my-table :info="$store.state.grade.data" />
+     <my-bottom :total="+$store.state.grade.total" />
     </section>
   </section>
 </template>
@@ -32,23 +32,14 @@ export default {
   data(){
     return{
       grade:'',
-      info:[
-        {
-          name:'shadow',
-          klass:'软件工程1',
-          number:'1231231',
-          abs:'11',
-          sort_class:'1',
-          sort_grade:'1',
-          total:'1',
-          fails:'1',
-        }
-      ]
     }
   },
   methods:{
     chooseItem(index){
       this.current = index
+    },
+    handleChangeYear(){
+      this.$store.dispatch('getStudentScore',{quarter:this.grade})
     }
   }
 }

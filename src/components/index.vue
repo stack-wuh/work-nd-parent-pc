@@ -17,8 +17,8 @@
       <span slot="left">教职工信息</span>
     </wrap-top>
     <section class="content">
-      <my-table :info="info" class="my-table"></my-table>
-      <my-bottom class="my-bottom"  />
+      <my-table :info="$store.state.index.data" class="my-table"></my-table>
+      <my-bottom class="my-bottom" :total="$store.state.index.total" />
     </section>
   </section>
 </template>
@@ -105,6 +105,9 @@ export default {
     jump2other(path){
       this.$router.push({path:path})
     }
+  },
+  created(){
+    this.$store.dispatch('indexDataFetch')
   }
 }
 </script>

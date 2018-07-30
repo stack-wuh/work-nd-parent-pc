@@ -4,7 +4,9 @@
     <section class="main">
       <my-header class="header" />
       <section class="container">
-        <router-view />
+        <transition name="fade" mode="out-in">
+            <router-view v-loading="loading" />
+        </transition>
       </section>
     </section>
   </section>
@@ -18,6 +20,11 @@ export default {
   components:{
     MyHeader,
     MyLeftmenu,
+  },
+  computed:{
+    loading(){
+      return this.$store.state.globalLoading
+    }
   }
 }
 </script>
@@ -51,5 +58,11 @@ export default {
       overflow-y: scroll;
     }
   }
+}
+.fade-enter-active, .fade-leave-active{
+  transition: opacity .3s ease 
+}
+.fade-fade-enter, .fade-leave-to{
+  opacity: 0
 }
 </style>

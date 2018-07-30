@@ -11,6 +11,11 @@ export default {
   components:{
     MyTable
   },
+  computed:{
+    RootName(){
+      return this.$route.name
+    }
+  },
   data(){
     return{
       info:[
@@ -24,6 +29,14 @@ export default {
         }
       ]
     }
+  },
+  created(){
+    if(this.RootName == 'leave'){
+      this.$store.dispatch('getLetterHistory',{currPageNo:1})
+    }else if(this.RootName == 'letter'){
+      this.$store.dispatch('getLetterHistory',{currPageNo:1})
+    }
+
   }
 }
 </script>

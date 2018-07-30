@@ -5,13 +5,13 @@
     </wrap-top>
     <nav class="nav">
       <ul>
-        <li :class="{active : index == 0}" v-for="(item,index) in navList" :key="index">{{item.name}}</li>
+        <li @click="chooseItem(index)" :class="{active : index == current}" v-for="(item,index) in navList" :key="index">{{item.name}}</li>
       </ul>
     </nav>
     <search type="fail" />
     <section class="content">
-     <my-table :info="info" />
-     <my-bottom />
+     <my-table :info="$store.state.fails.data" />
+     <my-bottom :total="$store.state.fails.total" />
     </section>
   </section>
 </template>
@@ -36,11 +36,11 @@ export default {
       navList:[
         {
           name:'本学期挂科',
-          value:'',
+          value:'now',
         },
         {
           name:'累计挂科',
-          value:'',
+          value:'history',
         },
       ],
       info:[
@@ -64,6 +64,7 @@ export default {
   methods:{
     chooseItem(index){
       this.current = index
+      this.$store.dispatch('getFailsList',{currPageNo:1,quarter:this.grade})
     }
   }
 }

@@ -55,9 +55,13 @@ export default {
         var reg = /^<p><br><\/p>$/
         if(valid){
           if(this.editor.txt.html().match(reg)){
-            console.log('请输入内容')
+            _g.toastMsg('warning','请编辑详情后提交')
           }else{
-            console.log(this.editor.txt.html())
+            this.form.context = this.editor.txt.html()
+            $http('recruit/getStudentRecruit.do',this.form).then(res=>{
+              let error = res.status == 0 ? 'success' : 'error'
+              _g.toastMsg(error,res.msg)
+            })
           }
         }
       })

@@ -1,41 +1,48 @@
 <template>
   <section class="father">
     <wrap-top>
-      <span slot="left">学生信息</span>
-      <span slot="right">学生: {{$store.state.student.total}}人</span>
+      <span slot="left">招生简章</span>
     </wrap-top>
-    <search type="student" />
     <section class="content">
-      <my-table :info="$store.getters.formatStudentList" />
-      <bottom :total="$store.state.student.total" />
+      <my-table :info="$store.state.guide.data" />
+      <bottom :total="$store.state.guide.total" />
     </section>
-  </section>
+  </section>  
 </template>
 
 
 <script>
 import WrapTop from '@/components/common/wraptop'
-import Search from '@/components/common/search'
 import MyTable from '@/components/common/myTable'
 import Bottom from '@/components/common/bottom'
 export default {
   components:{
     WrapTop,
-    Search,
     MyTable,
     Bottom
   },
   data(){
     return{
+
     }
   },
+  methods:{
+
+  },
   created(){
- 
+    this.$store.dispatch('getGuideList')
+    console.log(this.$store.state)
   }
 }
 </script>
 
 
 <style lang="less" scoped>
-
+.father{
+  .content{
+    .btm-list{
+      text-align: center;
+    }
+  }
+}
 </style>
