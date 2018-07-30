@@ -1,14 +1,14 @@
 <template>
   <section class="wrapper">
     <section class="wrap">
-      <el-pagination layout="total,prev,pager,next,jumper" :page-size="10" :total="400"></el-pagination>
+      <el-pagination layout="total,prev,pager,next,jumper" :page-size="10" :total="total"></el-pagination>
     </section>
   </section>  
 </template>
 
 <script>
 export default {
-  
+  props:['total']
 }
 </script>
 

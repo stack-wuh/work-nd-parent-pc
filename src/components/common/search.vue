@@ -3,22 +3,18 @@
     <section class="wrap">
       <section class="left">
         <el-button v-if="item.type === 'button'" v-for="(item,index) in searchList" :key="index">{{item.text}}</el-button>
-        <el-select v-model="major" placeholder="请选择专业" style="width:180px;">
-          <el-option label="aaa" value="aaa"></el-option>
-          <el-option label="aa1" value="aa1"></el-option>
-          <el-option label="aa2" value="aa2"></el-option>
+        <el-select v-model="major" @change="handleMajorChange" clearable placeholder="请选择专业" style="width:180px;">
+          <el-option v-for="(item,index) in $store.state.majorList" :key="index" :label="item" :value="item"></el-option>
         </el-select>
-        <el-select v-model="klass" placeholder="请选择班级" style="width:180px;">
-          <el-option label="bb1" value="11"></el-option>
-          <el-option label="bb2" value="21"></el-option>
-          <el-option label="bb3" value="31"></el-option>
+        <el-select @change="handleClassChange" v-model="klass" clearable placeholder="请选择班级" style="width:180px;">
+          <el-option v-for="(item,index) in $store.state.classesList" :key="index" :label="item" :value="item"></el-option>
         </el-select>
-        <el-select v-if="item.type === 'select'" v-for="(item,index) in searchList" :placeholder="item.placeholder" :key="index" v-model="item.value" style="width:180px">
-          <el-option v-for="(op,oi) in item.data" :label="op" :value="op" :key="oi"></el-option>
+        <el-select @change="fetchDataByRootName" v-if="item.type === 'select'" clearable v-for="(item,index) in searchList" :placeholder="item.placeholder" :key="index" v-model="item.value" style="width:180px">
+          <el-option v-for="(op,oi) in item.data" :label="op.key" :value="op.value" :key="oi"></el-option>
         </el-select>
       </section>
       <section class="right">
-        <el-input placeholder="请输入关键字" v-model="keyword"></el-input>
+        <el-input @change="fetchDataByRootName" @confirm="fetchDataByRootName" placeholder="请输入关键字" v-model="keyword" clearable></el-input>
       </section>
     </section>
   </section>
@@ -45,7 +41,8 @@ export default {
             {
               type:'select',
               placeholder:'是否关联',
-              data:['是','否']
+              data:[{key:'是',value:'0'},{key:'否',value:'1'}],
+              value:'',
             },
           ]
         },
@@ -75,7 +72,8 @@ export default {
             {
               type:'select',
               placeholder:'挂科数',
-              data:['10','20','30']
+              data:[{key:'10',value:10},{key:'20',value:20},{key:'30',value:30}],
+              value:'',
             },
           ]
         },
@@ -102,7 +100,40 @@ export default {
     searchList(){
       return  this.data && this.data.find(item => item.name === this.type) 
                   && this.data.find(item => item.name === this.type).list
+    },
+    RootPath(){
+      return this.$route.name
     }
+  },
+  methods:{
+    handleMajorChange(){
+      this.$store.dispatch('getClassesByMajor',{major:this.major})
+    },
+    handleClassChange(){
+      this.fetchDataByRootName()
+    },
+    fetchDataByRootName(){  
+      let search = {
+        currPageNo:1,
+        classes:this.klass,
+        keyWord:this.keyword,
+        isRelevance:this.searchList && this.searchList[1] && this.searchList[1].value,
+        failCount:this.searchList && this.searchList[1] && this.searchList[1].value,
+        type:'now'
+      }
+      switch(this.RootPath){
+        case 'student' : this.$store.dispatch('getStudentList',search) 
+          break;
+        case 'grade' : this.$store.dispatch('getStudentScore',search)
+          break; 
+        case 'fails' : this.$store.dispatch('getFailsList',search)
+          break;
+      }
+    }
+  },
+  created(){
+    this.$store.dispatch('getMajorList')
+    this.fetchDataByRootName()
   }
 }
 </script>

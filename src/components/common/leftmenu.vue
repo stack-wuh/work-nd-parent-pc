@@ -53,8 +53,8 @@ export default {
         },
         {
           name:'招生简章',
-          path:'guide',
-          routes:['/guide']
+          path:'guideList',
+          routes:['/guide','/guide/list']
         },
         {
           name:'系统设置',

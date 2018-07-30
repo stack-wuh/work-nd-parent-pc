@@ -14,9 +14,9 @@ export default {
   methods: {
     logout() {
       this.$http("User/logout").then(res=>{
-        let error = res.error == 0 ? 'success' : 'error'
-        _g.toastMsg(error,res.msg)
-        if(res.error == 0){
+        let error = res.status == 0 ? 'success' : 'error'
+        _g.toastMsg(status,res.msg)
+        if(res.status == 0){
           this.$router.replace('/login')
         }
       })

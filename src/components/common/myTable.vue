@@ -6,7 +6,7 @@
         <el-table-column v-if="$route.path === '/letter' || $route.path == '/index/message'" type="index" align="center" label="序号" width='80'></el-table-column>
         <el-table-column v-if="item.type === 'expand'" type="expand" align='center' v-for="(item,index) in dataList" :key="index" :label="item.key">
           <template slot-scope="scope">
-            <el-table :data="scope.row.data" border stripe>
+            <el-table :data="scope.row.scoreInfoList" border stripe>
               <el-table-column align="center" v-if="sub.type === 'default'" v-for="(sub,sin) in subDataList" :key="sin" :label="sub.key" :prop="sub.prop"></el-table-column>
             </el-table>
           </template>
@@ -14,7 +14,7 @@
         <el-table-column v-if="item.type === 'default'" align="center" v-for="(item,index) in dataList" :key="index" :label="item.key" :prop="item.prop"></el-table-column>
         <el-table-column fixed="right" v-if="item.type === 'button'" align='center' v-for="(item,index) in dataList" :key="index" :label="item.key">
           <template slot-scope="scope">
-              <el-button v-for="(btn,bin) in item.list" :key="bin" :type="btn.type" @click="btn.click">{{btn.text}}</el-button>
+              <el-button v-for="(btn,bin) in item.list" :key="bin" :type="btn.type" @click="btn.click(scope)">{{btn.text}}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -44,17 +44,17 @@ export default {
             },
             {
               key:'职务',
-              prop:'post',
+              prop:'administrative',
               type:'default',
             },
             {
               key:'管辖班级',
-              prop:'klasses',
+              prop:'scope',
               type:'default',
             },
             {
               key:'联系电话',
-              prop:'phone',
+              prop:'tel',
               type:'default',
             },
             {
@@ -64,7 +64,7 @@ export default {
             },
             {
               key:'微信',
-              prop:'weixin',
+              prop:'wechat',
               type:'default',
             },
             {
@@ -74,7 +74,7 @@ export default {
             },
             {
               key:'办公地址',
-              prop:'location',
+              prop:'address',
               type:'default',
             }
           ]
@@ -145,7 +145,7 @@ export default {
             },
             {
               key:'专业班级',
-              prop:'klass',
+              prop:'classes',
               type:'default',
             },
             {
@@ -155,27 +155,27 @@ export default {
             },
             {
               key:'平均成绩',
-              prop:'abs',
+              prop:'averageScore',
               type:'default',
             },
             {
               key:'班级排名',
-              prop:'sort_class',
+              prop:'classRank',
               type:'default',
             },
             {
               key:'年级排名',
-              prop:'sort_grade',
+              prop:'gradeRank',
               type:'default',
             },
             {
               key:'所得学分',
-              prop:'total',
+              prop:'credit',
               type:'default',
             },
             {
               key:'挂科门数',
-              prop:'fails',
+              prop:'failCount',
               type:'default',
             },
             {
@@ -210,7 +210,7 @@ export default {
             },
             {
               key:'班级',
-              prop:'klass',
+              prop:'classes',
               type:'default',
             },
             {
@@ -220,7 +220,7 @@ export default {
             },
             {
               key:'累计挂科',
-              prop:'total',
+              prop:'failCount',
               type:'default',
             },
           ]
@@ -271,12 +271,12 @@ export default {
             },
             {
               key:'职能',
-              prop:'post',
+              prop:'position',
               type:'default'
             },
             {
               key:'职能范围',
-              prop:'area',
+              prop:'scope',
               type:'default'
             },
             {
@@ -285,12 +285,12 @@ export default {
               list:[
                 {
                   text:'删除',
-                  click:'',
+                  click:this.handleClickDelById,
                   type:'text'
                 },
                 {
                   text:'更改',
-                  click:'',
+                  click:this.handleClickEdit,
                   type:'text'
                 }
               ]
@@ -338,7 +338,7 @@ export default {
             },
             {
               key:'专业班级',
-              prop:'klass',
+              prop:'classes',
               type:'default',
             },
             {
@@ -358,17 +358,17 @@ export default {
             },
             {
               key:'是否关联',
-              prop:'is_concat',
+              prop:'isRelevance',
               type:'default',
             },
             {
               key:'关联账号',
-              prop:'a_number',
+              prop:'userId',
               type:'default',
             },
             {
               key:'联系电话',
-              prop:'c_phone',
+              prop:'userPhone',
               type:'default',
             },
             {
@@ -426,7 +426,7 @@ export default {
           data:[
             {
               key:'课程名',
-              prop:'classify',
+              prop:'className',
               type:'default',
             },
             {
@@ -441,7 +441,7 @@ export default {
             },
             {
               key:'考试时间',
-              prop:'time',
+              prop:'examTime',
               type:'default',
             }
           ]
@@ -462,9 +462,23 @@ export default {
                 && this.subData.find(item => item.name == this.NAME).data
     }
   },
-  created(){
-    console.log(this.NAME)
-  }
+  methods:{
+    /**
+     * 单击编辑 -- 操作事件
+     */
+    handleClickEdit(e){
+      this.$emit('getRowData',e.row)
+    },
+
+    /**
+     * 单击删除 -- 操作事件
+     */
+    handleClickDelById(e){
+      this.$store.dispatch('delSettingAvatars',{id:e.row.id}).then(()=>{
+        this.$store.dispatch('getSettingsAvatars',{currPageNo:1})
+      })
+    },
+  },
 }
 </script>
 
