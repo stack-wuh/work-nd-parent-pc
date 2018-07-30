@@ -12,9 +12,11 @@ const FailsIndex = resolve => require(['@/components/manageFails/index'],resolve
 const LetterIndex = resolve => require(['@/components/manageLetter/index'],resolve)
 const LetterDetail = resolve => require(['@/components/manageLetter/child/detail'],resolve)
 const GuideIndex = resolve => require(['@/components/manageGuide/index'],resolve)
+const GuideList = resolve => require(['@/components/manageGuide/list'],resolve)
 const SettingIndex = resolve => require(['@/components/manageSetting/index'],resolve)
 const StudentIndex = resolve => require(['@/components/manageStudent/index'],resolve)
 
+const LoginIndex = resolve => require(['@/components/loginManage/login'],resolve)
 
 Vue.use(Router)
 
@@ -25,6 +27,11 @@ export default new Router({
       name:'home',
       component:Home,
       redirect:'/index',
+    },
+    {
+      path:'/login',
+      name:'login',
+      component:LoginIndex,
     },
     {
       path:'/',
@@ -115,6 +122,11 @@ export default new Router({
           path:'/guide',
           name:'guide',
           component:GuideIndex,
+        },
+        {
+          path:'/guide/list',
+          name:'guideList',
+          component:GuideList
         }
       ]
     },

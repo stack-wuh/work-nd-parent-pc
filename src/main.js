@@ -4,12 +4,28 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-import {Button,Select,Option,Input,Table,TableColumn, Pagination,Form,FormItem,Progress} from 'element-ui'
+import {Button,Select,Option,Input,Table,TableColumn, Pagination,Form,FormItem,Progress,Message,Loading,Dialog,CheckboxGroup,Checkbox} from 'element-ui'
 import '../static/default-theme/index.css'
 import '../static/css/base.less'
 import '../static/css/font/iconfont.css'
+import apiMethods from '../static/js/http'
+import _g from '../static/js/global'
+import axios from 'axios'
+import store from './vuex/store'
 
 Vue.prototype.$ELEMENT = {size:'primary',zIndex:3000}
+Vue.prototype.$store = store
+Vue.prototype.$message = Message
+Vue.prototype.$http = apiMethods
+
+window.axios = axios
+window._g = _g
+window.$bus = new Vue()
+window.$store = store
+window.$http = apiMethods
+//开发地址
+window.rootPath = '/adminapi/'
+
 
 Vue.use(Button)
 Vue.use(Select)
@@ -21,7 +37,10 @@ Vue.use(Pagination)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Progress)
-
+Vue.use(Loading)
+Vue.use(Dialog)
+Vue.use(CheckboxGroup)
+Vue.use(Checkbox)
 
 Vue.config.productionTip = false
 
@@ -29,6 +48,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  // store,
   components: { App },
   template: '<App/>'
 })
