@@ -144,7 +144,7 @@ export default {
   },
   created(){
     this.$store.dispatch('getClassesByMajor',{major:'软件'})
-    this.$store.dispatch('getSettingsAvatars',{currPageNo:1})
+    this.$store.dispatch('getSettingsAvatars')      
   }
 }
 </script>

@@ -14,11 +14,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/adminapi/': {
+      '/parents_guide/': {
         target:'http://192.168.10.122:8080/parents_guide/',
         changeOrigin: true,
         pathRewrite: {
-          '^/adminapi/': ''
+          '^/parents_guide/': ''
         }
       }
     },

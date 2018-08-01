@@ -14,7 +14,7 @@
         </el-select>
       </section>
       <section class="right">
-        <el-input @change="fetchDataByRootName" @confirm="fetchDataByRootName" placeholder="请输入关键字" v-model="keyword" clearable></el-input>
+        <el-input @change="confirmInput" @confirm="confirmInput" placeholder="请输入关键字" v-model="keyword" clearable></el-input>
       </section>
     </section>
   </section>
@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  props:['type'],
+  props:['type','current'],
   data(){
     return{
       klass:'',
@@ -43,6 +43,7 @@ export default {
               placeholder:'是否关联',
               data:[{key:'是',value:'0'},{key:'否',value:'1'}],
               value:'',
+              prop:'isRelevance'
             },
           ]
         },
@@ -109,26 +110,44 @@ export default {
     handleMajorChange(){
       this.$store.dispatch('getClassesByMajor',{major:this.major})
     },
-    handleClassChange(){
-      this.fetchDataByRootName()
+    handleClassChange(e){
+      this.$store.dispatch('getSearchDataChange',{classes:e}).then(()=>{
+        switch(this.RootPath){
+          case 'student' : this.$store.dispatch('getStudentList')
+            break;
+        }
+      })
+    },
+    confirmInput(e){
+      this.$store.dispatch('getSearchDataChange',{keyWord:e}).then(()=>{
+        switch(this.RootPath){
+          case 'student' : this.$store.dispatch('getStudentList')
+            break;
+        }
+      })
     },
     fetchDataByRootName(){  
       let search = {
-        currPageNo:1,
-        classes:this.klass,
-        keyWord:this.keyword,
         isRelevance:this.searchList && this.searchList[1] && this.searchList[1].value,
         failCount:this.searchList && this.searchList[1] && this.searchList[1].value,
-        type:'now'
+        type:'now',
       }
-      switch(this.RootPath){
-        case 'student' : this.$store.dispatch('getStudentList',search) 
-          break;
-        case 'grade' : this.$store.dispatch('getStudentScore',search)
-          break; 
-        case 'fails' : this.$store.dispatch('getFailsList',search)
-          break;
-      }
+      this.$store.dispatch('getSearchDataChange',search).then(()=>{
+        switch(this.RootPath){
+          case 'student' : this.$store.dispatch('getStudentList')
+            break;
+        }
+      })
+      // switch(this.RootPath){
+      //   case 'student1' : this.$store.dispatch('getStudentList',search) 
+      //     break;
+      //   case 'grade' : this.$store.dispatch('getStudentScore',search)
+      //     break; 
+      //   case 'fails' : this.$store.dispatch('getFailsList',search)
+      //     break;
+      //   case 'index' : this.$store.dispatch('indexDataFetch',search)
+      //     break;
+      // }
     }
   },
   created(){

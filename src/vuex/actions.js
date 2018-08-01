@@ -1,4 +1,5 @@
 import axois from 'axios'
+import { resolve } from 'url';
 
 const actions ={
   showLoading({commit},status){
@@ -9,7 +10,7 @@ const actions ={
    * 获取教职工信息
    */
   indexDataFetch({commit},status){
-    $http('teacherManage/getTeacherList.do',{currPageNo:1}).then(res=>{
+    $http('teacherManage/getTeacherList.do',status).then(res=>{
       commit('setIndexData',res)
     })
   },
@@ -32,7 +33,15 @@ const actions ={
     })
   },
 
-
+  /**
+   * search组件 search条件
+   */
+  getSearchDataChange({commit,state},status){
+    return new Promise((resolve,reject)=>{
+      commit('setSearchDataChange',status)
+      resolve()
+    })
+  }
 }
 
 export default actions

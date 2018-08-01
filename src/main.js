@@ -4,7 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-import {Button,Select,Option,Input,Table,TableColumn, Pagination,Form,FormItem,Progress,Message,Loading,Dialog,CheckboxGroup,Checkbox} from 'element-ui'
+import {Button,Select,Option,Input,Table,TableColumn, Tree , Pagination,Form,FormItem,Progress,Message,Loading,Dialog,CheckboxGroup,
+  Checkbox,MessageBox} from 'element-ui'
 import '../static/default-theme/index.css'
 import '../static/css/base.less'
 import '../static/css/font/iconfont.css'
@@ -17,14 +18,16 @@ Vue.prototype.$ELEMENT = {size:'primary',zIndex:3000}
 Vue.prototype.$store = store
 Vue.prototype.$message = Message
 Vue.prototype.$http = apiMethods
+Vue.prototype.$confirm = MessageBox.confirm
 
 window.axios = axios
 window._g = _g
 window.$bus = new Vue()
 window.$store = store
 window.$http = apiMethods
+
 //开发地址
-window.rootPath = '/adminapi/'
+window.rootPath = '/parents_guide/'
 
 
 Vue.use(Button)
@@ -41,6 +44,7 @@ Vue.use(Loading)
 Vue.use(Dialog)
 Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
+Vue.use(Tree)
 
 Vue.config.productionTip = false
 

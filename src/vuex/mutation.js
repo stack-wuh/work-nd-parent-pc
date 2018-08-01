@@ -14,6 +14,13 @@ const mutations = {
    */
   setClassesByMajor(state,status){
     state.classesList = status
+  },
+
+  /**
+   * 设置search组件的 search条件
+   */
+  setSearchDataChange(state,status){
+    state.search = Object.assign(state.search,status)
   }
 }
 

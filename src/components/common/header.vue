@@ -13,11 +13,13 @@
 export default {
   methods: {
     logout() {
-      this.$http("User/logout").then(res=>{
+      this.$http("manageUser/loginOut.do").then(res=>{
         let error = res.status == 0 ? 'success' : 'error'
         _g.toastMsg(status,res.msg)
         if(res.status == 0){
-          this.$router.replace('/login')
+          setTimeout(()=>{
+            this.$router.replace('/login')
+          },1000)
         }
       })
     }

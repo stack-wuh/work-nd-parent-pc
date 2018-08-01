@@ -16,10 +16,8 @@ const actions = {
   /**
    * 系统设置 -- 获取角色
    */
-  getSettingsAvatars({commit},status){
-    $http('teacherManage/teacherRoleList.do',{
-      currPageNo:status.currPageNo
-    }).then(res=>{
+  getSettingsAvatars({commit,rootState},status){
+    $http('teacherManage/teacherRoleList.do',rootState.search).then(res=>{
       commit('setSettingsAvatars',res)
     })
   },

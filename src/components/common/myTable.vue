@@ -377,12 +377,12 @@ export default {
               list:[
                 {
                   text:'解除',
-                  click:'',
+                  click:this.handleClickDelById,
                   type:'text'
                 },
                 {
                   text:'更改',
-                  click:'',
+                  click:this.handleClickWithDialog,
                   type:'text'
                 }
               ]
@@ -471,12 +471,42 @@ export default {
     },
 
     /**
+     * 单击编辑 -- 伴随着dialog对话框
+     */
+    handleClickWithDialog(e){
+      this.$emit('getRowDataWithDialog',{data:e.row,isShowDialog:true})
+    },
+
+    
+
+    /**
      * 单击删除 -- 操作事件
      */
     handleClickDelById(e){
-      this.$store.dispatch('delSettingAvatars',{id:e.row.id}).then(()=>{
-        this.$store.dispatch('getSettingsAvatars',{currPageNo:1})
+      let _del = '' , _get = '' , data = {}
+      switch(this.NAME){
+        case 'student' : _del = 'delStudentConcat' , _get = 'getStudentList' , data = {userId:e.row.userId}
+          break;
+        case 'setting' : _del = 'delSettingAvatars' , _get = 'getSettingsAvatars' , data = {id:e.row.id}
+          break;
+      }
+      this.$confirm('这是一条删除操作,是否继续?','提示',{
+        confirmButtonText:'确定',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=>{
+        this.$store.dispatch(_del,data).then(()=>{
+          this.$store.dispatch(_get)
+        })
+      }).catch(()=>{
+        _g.toastMsg('warning','操作已取消')
       })
+      // this.$store.dispatch(_del,data).then(()=>{
+      //   this.$store.dispatch(_get)
+      // })
+      // this.$store.dispatch('delSettingAvatars',{id:e.row.id}).then(()=>{
+      //   this.$store.dispatch('getSettingsAvatars',{currPageNo:1})
+      // })
     },
   },
 }
