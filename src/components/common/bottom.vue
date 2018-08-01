@@ -28,6 +28,7 @@ export default {
             break;
           case 'setting' : _get = 'getSettingsAvatars'
             break;
+          case 'fails' : _get = 'getFailsList'
         }
         this.$store.dispatch(_get)
       })

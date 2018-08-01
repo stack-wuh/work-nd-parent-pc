@@ -48,11 +48,14 @@ export default {
     },
     submit(){
       let elem = this.$refs.myTree
-      let list = elem.getCheckedNodes().toString()
+      let list = elem.getCheckedNodes().map(item => {
+        return {name:item.label,number:item.number}
+      })
       if(list.length == 0){
         _g.toastMsg('warning','请选择发送对象!')
         return
       }
+      list = JSON.stringify(list)
       this.$http('SummaryManage/addSummary.do',{content:this.editor.txt.html(),stuData:list}).then(res=>{
         let error = res.status == 0 ? 'success' : 'error'
         _g.toastMsg(error,res.msg)

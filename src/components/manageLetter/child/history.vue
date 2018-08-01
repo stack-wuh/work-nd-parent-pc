@@ -1,6 +1,6 @@
 <template>
   <section class="father">
-    <my-table :info="info" />
+    <my-table :info="$store.state.letter.data" />
   </section>
 </template>
 
@@ -32,9 +32,9 @@ export default {
   },
   created(){
     if(this.RootName == 'leave'){
-      this.$store.dispatch('getLetterHistory',{currPageNo:1})
+      this.$store.dispatch('getLeaveHistory')
     }else if(this.RootName == 'letter'){
-      this.$store.dispatch('getLetterHistory',{currPageNo:1})
+      this.$store.dispatch('getLetterHistory')
     }
 
   }

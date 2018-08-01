@@ -11,13 +11,8 @@ const mutations = {
 }
 
 const actions = {
-  getStudentScore({commit},state){
-    $http('ScoreManage/getScoreList.do',{
-      currPageNo:1,
-      classes:state.classes,
-      keyWord:state.keyWord,
-      quarter:'2018年春季学期'
-    }).then(res=>{
+  getStudentScore({commit,rootState},state){
+    $http('ScoreManage/getScoreList.do',rootState.search).then(res=>{
       commit('setStudentScore',res)
     })
   }

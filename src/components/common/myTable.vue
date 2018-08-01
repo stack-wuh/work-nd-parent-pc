@@ -185,7 +185,7 @@ export default {
                 {
                   text:'编辑',
                   type:'text',
-                  click:''
+                  click:this.handleClickWithDialog,
                 },
                 {
                   text:'详情',
@@ -229,13 +229,13 @@ export default {
           name:'letter',
           data:[
             {
-              key:'名称',
-              prop:'name',
+              key:'学期',
+              prop:'quarter',
               type:'default',
             },
             {
               key:'发布时间',
-              prop:'time',
+              prop:'createTime',
               type:'default',
             },
             {

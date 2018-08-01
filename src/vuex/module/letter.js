@@ -29,12 +29,17 @@ const actions = {
    * @param {*} param0 
    * @param {*} status 
    */
-  getLetterHistory({commit},status){
-    $http('SummaryManage/getSummaryList.do',{currPageNo:status.currPageNo}).then(res=>{
+  getLetterHistory({commit,rootState},status){
+    $http('SummaryManage/getSummaryList.do',rootState.search).then(res=>{
       commit('setLetterHistory',res)
     })
   },
 
+  getLeaveHistory({commit,rootState},status){
+    $http('noticeManage/getNoticeList.do',rootState.search).then(res=>{
+      commit('setLetterHistory',res)
+    })
+  }
 }
 
 const getters = {

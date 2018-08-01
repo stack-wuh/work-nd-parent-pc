@@ -43,29 +43,20 @@ export default {
           value:'history',
         },
       ],
-      info:[
-        {
-          name:'shadow',
-          klass:'软件工程1',
-          number:'1231231',
-          total:'10',
-          data:[
-            {
-              classify:'英语',
-              score:'100',
-              credit:'1',
-              time:'大一上学期',
-            }
-          ]
-        }
-      ]
+      info:[]
     }
   },
   methods:{
     chooseItem(index){
       this.current = index
-      this.$store.dispatch('getFailsList',{currPageNo:1,quarter:this.grade})
+      let type = index == 0 ? 'now' : 'history' 
+      this.$store.dispatch('changeFailsType',{type:type}).then(()=>{
+        this.$store.dispatch('getFailsList')
+      })
     }
+  },
+  created(){
+    this.$store.dispatch('getFailsList')
   }
 }
 </script>

@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 
 import {Button,Select,Option,Input,Table,TableColumn, Tree , Pagination,Form,FormItem,Progress,Message,Loading,Dialog,CheckboxGroup,
-  Checkbox,MessageBox} from 'element-ui'
+  Checkbox,MessageBox,Switch} from 'element-ui'
 import '../static/default-theme/index.css'
 import '../static/css/base.less'
 import '../static/css/font/iconfont.css'
@@ -45,6 +45,7 @@ Vue.use(Dialog)
 Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 Vue.use(Tree)
+Vue.use(Switch)
 
 Vue.config.productionTip = false
 

@@ -2,7 +2,7 @@
   <section class="wrapper">
     <section class="wrap">
       <section class="left">
-        <el-button v-if="item.type === 'button'" v-for="(item,index) in searchList" :key="index">{{item.text}}</el-button>
+        <el-button v-if="item.type === 'button'" @click="item.click" v-for="(item,index) in searchList" :key="index">{{item.text}}</el-button>
         <el-select v-model="major" @change="handleMajorChange" clearable placeholder="请选择专业" style="width:180px;">
           <el-option v-for="(item,index) in $store.state.majorList" :key="index" :label="item" :value="item"></el-option>
         </el-select>
@@ -57,7 +57,7 @@ export default {
             },
             {
               type:'button',
-              click:'',
+              click:this.handleClickOpenDialog,
               text:'添加',
             },
           ]
@@ -73,7 +73,7 @@ export default {
             {
               type:'select',
               placeholder:'挂科数',
-              data:[{key:'10',value:10},{key:'20',value:20},{key:'30',value:30}],
+              data:[],
               value:'',
             },
           ]
@@ -95,6 +95,7 @@ export default {
           ]
         },
       ],
+      failCheckList:[]
     }
   },
   computed:{
@@ -115,6 +116,10 @@ export default {
         switch(this.RootPath){
           case 'student' : this.$store.dispatch('getStudentList')
             break;
+          case 'fails' : this.$store.dispatch('getFailsList')
+            break;
+          case 'grade' : this.$store.dispatch('getStudentScore')
+            break
         }
       })
     },
@@ -123,9 +128,18 @@ export default {
         switch(this.RootPath){
           case 'student' : this.$store.dispatch('getStudentList')
             break;
+          case 'fails' : this.$store.dispatch('getFailsList')
+            break;
+          case 'grade' : this.$store.dispatch('getStudentScore')
+            break;
         }
       })
     },
+
+    handleClickOpenDialog(){
+      this.$emit('getShowDialog',{isShowDialog:true})
+    },
+
     fetchDataByRootName(){  
       let search = {
         isRelevance:this.searchList && this.searchList[1] && this.searchList[1].value,
@@ -135,6 +149,8 @@ export default {
       this.$store.dispatch('getSearchDataChange',search).then(()=>{
         switch(this.RootPath){
           case 'student' : this.$store.dispatch('getStudentList')
+            break;
+          case 'fails' : this.$store.dispatch('getFailsList')
             break;
         }
       })
@@ -152,7 +168,19 @@ export default {
   },
   created(){
     this.$store.dispatch('getMajorList')
-    this.fetchDataByRootName()
+    var arr = []
+    for(var i=1;i<=20;i++){
+      var obj = {
+        key:i,
+        value:i
+      }
+      arr.push(obj)
+    }
+    this.data.map(item => {
+      if(item.name == 'fail'){
+        item.list[1].data = arr
+      }
+    })
   }
 }
 </script>
