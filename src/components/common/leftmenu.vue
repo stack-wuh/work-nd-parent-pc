@@ -24,7 +24,7 @@ export default {
         {
           name:'首页',
           path:'index',
-          routes:['/index','/index/leave','/index/message','/index/summary']
+          routes:['/index','/index/leave','/index/message','/index/summary','/index/leave/detail','/index/message/detail']
         },
         {
           name:'学生管理',
@@ -49,12 +49,12 @@ export default {
         {
           name:'告家长书',
           path:'letter',
-          routes:['/letter']
+          routes:['/letter','/letter/detail']
         },
         {
           name:'招生简章',
           path:'guideList',
-          routes:['/guide','/guide/list']
+          routes:['/guide','/guide/list','/guide/list/detail']
         },
         {
           name:'系统设置',
