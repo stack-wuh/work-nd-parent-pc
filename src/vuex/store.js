@@ -12,6 +12,7 @@ import failsModule from '../vuex/module/fails'
 import letterModule from '../vuex/module/letter'
 import settingModule from '../vuex/module/setting'
 import guideModule from '../vuex/module/guide'
+import CheckModule from '../vuex/module/check'
 
 
 import logPlugins from '../vuex/plugins/log'
@@ -31,6 +32,7 @@ export default new Vuex.Store({
     letter:letterModule,
     setting:settingModule,
     guide:guideModule,
+    check:CheckModule,
   },
   plugins:[logPlugins]
 })

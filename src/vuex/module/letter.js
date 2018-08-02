@@ -34,7 +34,11 @@ const actions = {
       commit('setLetterHistory',res)
     })
   },
-
+  /**
+   * 获取放假通知列表
+   * @param {*} param0 
+   * @param {*} status 
+   */
   getLeaveHistory({commit,rootState},status){
     $http('noticeManage/getNoticeList.do',rootState.search).then(res=>{
       commit('setLetterHistory',res)
@@ -43,6 +47,20 @@ const actions = {
 }
 
 const getters = {
+  /**
+   * 过滤放假记录列表
+   * 0 -- 放假通知
+   * 1 -- 放假安排
+   * @param {*} state 
+   * @param {*} status 
+   */
+  formatLeaveList(state,status){
+      state.data.map(item => {
+        item.type = item.typeId == 0 ? '放假通知' : '放假安排'
+      })
+      return state.data
+  },
+
   /**
    * 过滤数据成为树形
    * [

@@ -9,8 +9,8 @@ const actions ={
   /**
    * 获取教职工信息
    */
-  indexDataFetch({commit},status){
-    $http('teacherManage/getTeacherList.do',status).then(res=>{
+  indexDataFetch({commit,state},status){
+    $http('teacherManage/getTeacherList.do',state.search).then(res=>{
       commit('setIndexData',res)
     })
   },

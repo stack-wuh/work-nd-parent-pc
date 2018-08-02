@@ -1,3 +1,5 @@
+import { resolve } from "url";
+
 const state = {
   data:[],
   total:0
@@ -5,15 +7,17 @@ const state = {
 
 const mutations = {
   setGuideList(state,status){
-    state.data = status.data.list
-    state.total = status.data.total
+    state.data = status.data
   } 
 }
 
 const actions = {
   getGuideList({commit},status){
     $http('/recruitManage/getRecruit.do').then(res=>{
-      commit('setGuideList',res)
+      return new Promise((resolve,reject)=>{
+        commit('setGuideList',res)
+        resolve()
+      })
     })
   }
 }
