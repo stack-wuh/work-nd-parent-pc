@@ -29,6 +29,11 @@ export default {
           case 'setting' : _get = 'getSettingsAvatars'
             break;
           case 'fails' : _get = 'getFailsList'
+            break;
+          case 'index' : _get = 'indexDataFetch'
+            break;
+          case 'grade' : _get = 'getStudentScore'
+            break;
         }
         this.$store.dispatch(_get)
       })

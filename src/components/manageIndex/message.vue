@@ -4,11 +4,13 @@
       <span slot="left">我的消息</span>
     </wrap-top>
     <nav class="nav">
-      <span class="active">待回复消息</span>
-      <span>历史消息</span>
+      <span @click="handleClickChange(0)" :class="{active:current == 0}">待回复消息</span>
+      <span @click="handleClickChange(1)" :class="{active:current == 1}">历史消息</span>
     </nav>
     <section class="content">
-      <my-table :info="info" ></my-table>
+      <my-table v-if="current == 0" :info="$store.state.index.data"></my-table>
+      <component v-else :is="componentId"></component>
+      <bottom :total="$store.state.index.total" />
     </section>
   </section>  
 </template>
@@ -17,24 +19,33 @@
 <script>
 import WrapTop from '@/components/common/wraptop'
 import MyTable from '@/components/common/myTable'
+import Bottom from '@/components/common/bottom'
+import History from '@/components/manageIndex/child/history'
 export default {
   components:{
     WrapTop,
     MyTable,
+    Bottom,
+    History
   },
   data(){
     return {
-      info:[
-        {
-          name:'aaa',
-          time:'2018年7月15日 10:10'
-        },
-        {
-          name:'bbb',
-          time:'2018年7月17日 10:00'
-        }
-      ]
+      current:0,
+      componentId:'history'
     }
+  },
+  methods:{
+    handleClickChange(index){
+      this.current = index
+      if(index == 0){
+        this.$store.dispatch('getWillBackNotice')
+      }else{
+        this.$store.dispatch('getHistoryNotice')
+      }
+    }
+  },
+  created(){
+    this.$store.dispatch('getWillBackNotice')
   }
 }
 </script>
@@ -62,6 +73,9 @@ export default {
     span.active{
       color: #fff;
       background-color: @base;
+    }
+    span:hover{
+      cursor: pointer;
     }
   }
 

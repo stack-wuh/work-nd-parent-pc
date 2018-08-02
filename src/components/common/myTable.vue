@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  props:['info'],
+  props:['info','type'],
   data(){
     return{
       data:[
@@ -190,7 +190,7 @@ export default {
                 {
                   text:'详情',
                   type:'text',
-                  click:''
+                  click:this.handleClickDetail
                 }
               ]
             }
@@ -250,7 +250,7 @@ export default {
                 {
                   text:'查看详情',
                   type:'text',
-                  click:''
+                  click:this.jump2Detail
                 }
               ]
             }
@@ -301,13 +301,18 @@ export default {
           name:'leave',
           data:[
               {
-                key:'名称',
-                prop:'name',
+                key:'类型',
+                prop:'type',
+                type:'default',
+              },
+              {
+                key:'标题',
+                prop:'title',
                 type:'default',
               },
               {
                 key:'发布时间',
-                prop:'time',
+                prop:'createTime',
                 type:'default',
               },
               {
@@ -322,7 +327,7 @@ export default {
                   {
                     text:'查看详情',
                     type:'text',
-                    click:''
+                    click:this.jump2Detail
                   }
                 ]
               }
@@ -397,14 +402,14 @@ export default {
               type:'index',
             },
             {
-              key:'消息名',
+              key:'消息内容',
               type:'default',
-              prop:'name',
+              prop:'content',
             },
             {
               key:'发布时间',
               type:'default',
-              prop:'time',
+              prop:'createTime',
             },
             {
               key:'操作',
@@ -412,10 +417,79 @@ export default {
               list:[
                 {
                   text:'查看',
-                  click:'',
+                  click:this.jump2Detail,
                   type:'text'
                 }
               ]
+            }
+          ]
+        },
+        {
+          name:'guideList',
+          data:[
+            {
+              key:'序号',
+              type:'index',
+            },
+            {
+              key:'标题',
+              type:'default',
+              prop:'title',
+            },
+            {
+              key:'内容',
+              type:'default',
+              prop:'content',
+            },
+            {
+              key:'发布时间',
+              type:'default',
+              prop:'createTime'
+            },
+            {
+              key:'操作',
+              type:'button',
+              list:[
+                {
+                  text:'查看',
+                  type:'text',
+                  click:this.jump2Detail
+                },
+                {
+                  text:'更新',
+                  type:'text',
+                  click:this.handleTumpToEditForGuide
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type:'message1',
+          data:[
+            {
+              key:'序号',
+              type:'index'
+            },
+            {
+              key:'意见内容',
+              prop:'feedContent',
+              type:'default'
+            },
+            {
+              key:'提交时间',
+              prop:'feedTime',
+              type:'default'
+            },
+            {
+              key:'回复内容',
+              prop:'replyContent',
+              type:'default',
+            },
+            {
+              key:'回复时间',
+              prop:'replyTime',
+              type:'default'
             }
           ]
         }
@@ -454,8 +528,13 @@ export default {
       return this.$route.name
     },
     dataList(){
-      return this.data && this.data.find(item => item.name == this.NAME) 
+      if(!this.type){
+        return this.data && this.data.find(item => item.name == this.NAME) 
                 && this.data.find(item => item.name == this.NAME).data
+      }else{
+        return this.data && this.data.find(item => item.type == this.type)
+                && this.data.find(item => item.type == this.type).data
+      }
     },
     subDataList(){
       return this.data && this.subData.find(item => item.name == this.NAME) 
@@ -464,10 +543,40 @@ export default {
   },
   methods:{
     /**
+     * 更新 -- 发布页 -- 招生简章
+     */
+    handleTumpToEditForGuide(e){
+      this.$router.push({path:'/guide'})
+    },
+    /**
+     * 查看详情至详情页
+     */
+    jump2Detail(e){
+      let RootPath = this.$route.path , path = '' , query = {}
+      switch(RootPath){
+        case '/index/leave' : path = '/index/leave/detail' , query = {id:e.row.id} 
+          break;
+        case '/index/message' : path = '/index/message/detail'
+          break;
+        case '/guide/list' : path = '/guide/list/detail' , query = {id:e.row.id}
+          break;
+        case '/letter' : path = '/letter/detail' , query = {id:e.row.id}
+          break; 
+      }
+      this.$router.push({path:path , query:query})
+    },
+    /**
      * 单击编辑 -- 操作事件
      */
     handleClickEdit(e){
       this.$emit('getRowData',e.row)
+    },
+
+    /**
+     * 查看详情
+     */
+    handleClickDetail(e){
+      this.$emit('getDetailInfo',{isShowDetail:true,data:e.row})
     },
 
     /**
@@ -509,6 +618,9 @@ export default {
       // })
     },
   },
+  created(){
+ 
+  }
 }
 </script>
 

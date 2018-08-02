@@ -1,7 +1,7 @@
 <template>
   <section class="father">
     <wrap-top>
-      <span slot="left">招生简章</span>
+      <span slot="left">发布招生简章</span>
     </wrap-top>
     <section class="content">
       <el-form :model="form" ref="myForm" :rules="rules" class="my-form" label-width="120px">
@@ -45,6 +45,7 @@ export default {
       form:{
         title:'',
         context:'',
+        id:'',
       },
       rules:rules
     }
@@ -58,9 +59,14 @@ export default {
             _g.toastMsg('warning','请编辑详情后提交')
           }else{
             this.form.context = this.editor.txt.html()
-            $http('recruit/getStudentRecruit.do',this.form).then(res=>{
+            $http('recruitManage/addOrUpRecruit.do',this.form).then(res=>{
               let error = res.status == 0 ? 'success' : 'error'
               _g.toastMsg(error,res.msg)
+              if(res.status == 0){
+                setTimeout(()=>{
+                  this.$router.push({path:'/guide/list/detail'})
+                },100)
+              }
             })
           }
         }
@@ -69,8 +75,15 @@ export default {
   },
   created(){
     this.$nextTick(()=>{
+      this.$store.dispatch('getGuideList')
       this.editor = new Editor('#editor')
       this.editor.create()
+      setTimeout(()=>{
+         this.editor.txt.clear()
+         this.form.title  = this.$store.state.guide.data[0].title
+         this.form.id = this.$store.state.guide.data[0].id
+         this.editor.txt.html(this.$store.state.guide.data[0].content)
+      },100)
     })
   }
 }

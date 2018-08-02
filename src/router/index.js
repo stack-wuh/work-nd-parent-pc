@@ -15,6 +15,7 @@ const GuideIndex = resolve => require(['@/components/manageGuide/index'],resolve
 const GuideList = resolve => require(['@/components/manageGuide/list'],resolve)
 const SettingIndex = resolve => require(['@/components/manageSetting/index'],resolve)
 const StudentIndex = resolve => require(['@/components/manageStudent/index'],resolve)
+const ContextDetail = resolve => require(['@/components/common/detail'],resolve)
 
 const LoginIndex = resolve => require(['@/components/loginManage/login'],resolve)
 
@@ -57,6 +58,16 @@ export default new Router({
           path:'/index/message',
           name:'message',
           component:MessageIndex
+        },
+        {
+          path:'/index/leave/detail',
+          name:'contextDetail0',
+          component:ContextDetail
+        },
+        {
+          path:'/index/message/detail',
+          name:'contextDetail1',
+          component:ContextDetail
         }
       ]
     },
@@ -109,7 +120,7 @@ export default new Router({
         {
           path:'/letter/detail',
           name:'letterDetail',
-          component:LetterDetail
+          component:ContextDetail
         }
       ]
     },
@@ -127,6 +138,11 @@ export default new Router({
           path:'/guide/list',
           name:'guideList',
           component:GuideList
+        },
+        {
+          path:'/guide/list/detail',
+          name:'contextDetail2',
+          component:ContextDetail
         }
       ]
     },

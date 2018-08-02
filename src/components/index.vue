@@ -12,7 +12,7 @@
         </li>
       </ul>
     </section>
-    <search />
+    <search  />
     <wrap-top>
       <span slot="left">教职工信息</span>
     </wrap-top>

@@ -5,7 +5,6 @@
     </wrap-top>
     <section class="content">
       <my-table :info="$store.state.guide.data" />
-      <bottom :total="$store.state.guide.total" />
     </section>
   </section>  
 </template>
@@ -31,7 +30,6 @@ export default {
   },
   created(){
     this.$store.dispatch('getGuideList')
-    console.log(this.$store.state)
   }
 }
 </script>

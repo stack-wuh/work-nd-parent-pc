@@ -4,7 +4,7 @@
       <span slot="left">考勤管理</span>
       <span slot="right">
         <el-select v-model="grade" placeholder="请选择学期">
-          <el-option label="1212" value="123123"></el-option>
+          <el-option v-for="(item,index) in $store.getters.quarterList" :label="item" :value="item"></el-option>
         </el-select>
       </span>
     </wrap-top>
@@ -83,7 +83,11 @@ export default {
     chooseItem(index){
       this.current = index
     }
-  }
+  },
+  created() {
+    this.$store.dispatch('getStudentCheckList',{type:'2'})
+    console.log(this.$store.getters)
+  },
 }
 </script>
 

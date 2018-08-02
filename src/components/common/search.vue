@@ -119,7 +119,9 @@ export default {
           case 'fails' : this.$store.dispatch('getFailsList')
             break;
           case 'grade' : this.$store.dispatch('getStudentScore')
-            break
+            break;
+          case 'index' : this.$store.dispatch('indexDataFetch')
+            break;
         }
       })
     },
@@ -131,6 +133,8 @@ export default {
           case 'fails' : this.$store.dispatch('getFailsList')
             break;
           case 'grade' : this.$store.dispatch('getStudentScore')
+            break;
+          case 'index' : this.$store.dispatch('indexDataFetch')
             break;
         }
       })

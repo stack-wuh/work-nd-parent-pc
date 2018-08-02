@@ -1,7 +1,7 @@
 <template>
   <section class="father">
-    <my-table :info="$store.state.letter.data" />
-  </section>
+    <my-table :info="RootName == 'letter' ? $store.state.letter.data : $store.getters.formatLeaveList" />
+  </section> 
 </template>
 
 
@@ -18,16 +18,7 @@ export default {
   },
   data(){
     return{
-      info:[
-        {
-          name:'给家长的一封信',
-          time:'2018年7月24日 10:10'
-        },
-        {
-          name:'给家长的一封信',
-          time:'2018年7月24日 10:11'
-        }
-      ]
+      info:[]
     }
   },
   created(){
