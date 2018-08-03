@@ -1,14 +1,14 @@
 <template>
   <section class="wrapper">
     <section class="wrap">
-      <el-pagination  :current-page="current" @current-change="handleCurrentChange" layout="total,prev,pager,next,jumper" :page-size="10" :total="total"></el-pagination>
+      <el-pagination  :current-page="currentPage" @current-change="handleCurrentChange" layout="total,prev,pager,next,jumper" :page-size="10" :total="total"></el-pagination>
     </section>
   </section>  
 </template>
 
 <script>
 export default {
-  props:['total'],
+  props:['total','currentPage'],
   data(){
     return {
       current:1
@@ -34,6 +34,7 @@ export default {
             break;
           case 'grade' : _get = 'getStudentScore'
             break;
+          case 'check' : _get = 'getStudentCheckList'
         }
         this.$store.dispatch(_get)
       })

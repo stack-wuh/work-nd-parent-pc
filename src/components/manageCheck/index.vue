@@ -3,22 +3,26 @@
     <wrap-top>
       <span slot="left">考勤管理</span>
       <span slot="right">
-        <el-select v-model="grade" placeholder="请选择学期">
-          <el-option v-for="(item,index) in $store.getters.quarterList" :label="item" :value="item"></el-option>
+        <el-select @change="$store.dispatch('getStudentCheckList',{quarter:grade})" v-model="grade" placeholder="请选择学期">
+          <el-option v-for="(item,index) in $store.getters.quarterList" :label="item" :value="item" :key="index"></el-option>
         </el-select>
       </span>
     </wrap-top>
     <nav>
       <ul>
         <li>分类: </li>
-        <li @click="chooseItem(index)" v-for="(item,index) in navList" :key="index" :class="{active: index == current}">{{item.name}}</li>
+        <li @click="chooseItem(index,item)" v-for="(item,index) in navList" :key="index" :class="{active: index == current}">{{item.name}}</li>
       </ul>
     </nav>
     <search type="check" />
     <section class="content">
-     <my-table :info="info" />
-     <my-bottom />
+     <my-table @getRowDataWithDialog="getRowDataWithDialog" :info="$store.getters.formatCheckList" />
+     <my-bottom :total="$store.state.check.total" :currentPage="$store.state.check.currentPage" />
     </section>
+    <el-dialog title="学生考勤详情" :visible.sync="dialogVisble">
+      <p class="margin-btm-15">{{navList[current].name}}</p>
+      <my-table :info="$store.state.check.info" :type="current == 0 ? 'check1' : current ==1 ?  'check2' : current == 2 ? 'check1' : 'check3' " />
+    </el-dialog>
   </section>
 </template>
 
@@ -40,53 +44,48 @@ export default {
       grade:'',
       current:0,
       navList:[
+        // {
+        //   name:'全部',
+        //   value:'1',
+        // },
         {
-          name:'全部',
-          value:'',
+          name:'晚点名考勤',
+          value:'2',
         },
         {
           name:'课程考勤',
-          value:'',
+          value:'5',
         },
-        {
-          name:'晚点名考勤',
-          value:'',
-        },
+
         {
           name:'宿舍考勤',
-          value:'',
+          value:'3',
         },
         {
           name:'会议讲座考勤',
-          value:'',
+          value:'4',
         },
-        {
-          name:'其他考勤',
-          value:'',
-        }
+        // {
+        //   name:'其他考勤',
+        //   value:'',
+        // }
       ],
-      info:[
-        {
-          name:'shadow',
-          klass:'软件工程1',
-          number:'1231231',
-          check_type:'默认类型',
-          later:'10',
-          out:'0',
-          leave:'22',
-          check_rota:'10%',
-        }
-      ]
+      dialogVisble:false
     }
   },
   methods:{
-    chooseItem(index){
+    getRowDataWithDialog(e){
+      this.dialogVisble = e.isShowDialog
+      let {number,type} = e.data
+      this.$store.dispatch('getStudentCheckInfo',{number:number,type:type,currPageNo:1,quarter:this.grade})
+    },
+    chooseItem(index,item){
       this.current = index
+      this.$store.dispatch('getStudentCheckList',{type:item.value,currPageNo:1})
     }
   },
   created() {
     this.$store.dispatch('getStudentCheckList',{type:'2'})
-    console.log(this.$store.getters)
   },
 }
 </script>
@@ -112,6 +111,9 @@ export default {
       }
 
     }
+  }
+  .margin-btm-15{
+    margin-bottom:15px;
   }
 }
 </style>

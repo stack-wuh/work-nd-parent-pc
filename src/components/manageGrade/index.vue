@@ -11,8 +11,9 @@
     <search @getShowDialog="getShowDialog" type="grade" />
     <section class="content">
      <my-table @getDetailInfo="getDetailInfo" @getRowDataWithDialog="getRowDataWithDialog" :info="$store.state.grade.data" />
-     <my-bottom :total="+$store.state.grade.total" />
+     <my-bottom :total="+$store.state.grade.total" :currentPage="$store.state.grade.currentPage" />
     </section>
+
     <el-dialog :title="title" :visible.sync="dialogVisible">
       <el-form label-width="120px" :model="myForm" ref="myForm">
         <el-form-item v-for="(item,index) in form.info" :key="index" :label="item.label" :rules="item.rules" :prop="item.prop">
@@ -33,7 +34,7 @@
       </el-form>
       <div slot="footer">
         <el-button @click="reset" type="" size="small">取消</el-button>
-        <el-button @click="submit" type="primary" size="small">确定</el-button>
+        <el-button :disabled="!btnDisabled" @click="submit" type="primary" size="small">确定</el-button>
       </div>
     </el-dialog>
   </section>
@@ -274,29 +275,9 @@ export default {
   },
   methods:{
     /**
-     * 获取学生信息详情
+     * 获取学生信息列表
      */
-    getDetailInfo(e){
-      this.dialogVisible = e.isShowDetail
-      this.getRowDataWithDialog({isShowDialog:e.isShowDetail,data:{id:e.data.id}})
-      this.title = '查看学生成绩详情'
-      this.btnDisabled = false
-      this.form.info.map(item => {
-        item = Object.assign(item,{disabled:false})
-      })
-      this.form.list.map(item => {
-        item.map(list => {
-          list = Object.assign(list,{disabled:false})
-        })
-      })
-    },
-
-    /**
-     * 编辑学生成绩信息
-     */
-    getRowDataWithDialog(e){
-      this.dialogVisible = e && e.isShowDialog
-      this.btnDisabled = true
+    getStudentList(e){
       $http('ScoreManage/getScoreInfo.do',{id:e.data.id}).then(res=>{
         this.myForm = Object.assign(this.myForm,res.data)
         var arr = this.form.list[0]
@@ -305,8 +286,39 @@ export default {
           this.form.list.push(arr)
           this.myForm.data[index] = item
         })
+      }) 
+    },
+    formatStudentList(){
+      this.form.info.map(item => {
+        item = Object.assign(item,{disabled:this.btnDisabled})
+      })
+      this.form.list.map(item => {
+        item.map(list => {
+          list = Object.assign(list,{disabled:this.btnDisabled})
+        })
       })
     },
+    /**
+     * 获取学生信息详情
+     */
+    getDetailInfo(e){
+      this.dialogVisible = e.isShowDetail
+      this.title = '查看学生成绩详情'
+      this.btnDisabled = false
+      this.getStudentList(e)
+      this.formatStudentList()
+    },
+
+    /**
+     * 编辑学生成绩信息
+     */
+    getRowDataWithDialog(e){
+      this.dialogVisible = e && e.isShowDialog
+      this.btnDisabled = true
+      this.getStudentList(e)
+      this.formatStudentList()
+    },
+
     getShowDialog(e){
       this.dialogVisible = e.isShowDialog
     },

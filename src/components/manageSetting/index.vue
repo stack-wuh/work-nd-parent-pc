@@ -8,8 +8,7 @@
       <el-button @click="dialogVisible = true" size="small">添加</el-button>
     </nav>
     <my-table @getRowData="getRowData" :info="$store.getters.formatSettingList" />
-    <bottom :total="$store.state.setting.total" />
-
+    <bottom :total="$store.state.setting.total" :currentPage="$store.state.setting.currentPage" />
     <el-dialog title="编辑新角色" :visible.sync="dialogVisible">
       <el-form :model="form" ref="myForm" :rules="rules">
         <el-form-item label="姓名" prop="name">
@@ -32,7 +31,7 @@
                 <el-option v-for="(item,index) in $store.state.majorList" :key="index" :label="item" :value="item"></el-option>
               </el-select>
               <el-select placeholder="请选择学年" v-model="year">
-                
+                <el-option v-for="(item,index) in $store.getters.quarterList" :key="index" :label="item" :value="item"></el-option>
               </el-select>
             </section>
             <section class="list">

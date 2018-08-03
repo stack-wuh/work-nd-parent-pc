@@ -8,10 +8,11 @@
         <li @click="chooseItem(index)" :class="{active : index == current}" v-for="(item,index) in navList" :key="index">{{item.name}}</li>
       </ul>
     </nav>
-    <search type="fail" />
+    <search @getShowDialog="getShowDialog" type="fail" />
     <section class="content">
-     <my-table :info="$store.state.fails.data" />
-     <my-bottom :total="$store.state.fails.total" />
+     <my-table @getResetMsg="getResetMsg" :info="$store.state.fails.data" :isShowSelection="isShowDialog" style="margin-bottom:15px;" />
+
+     <my-bottom :total="$store.state.fails.total" :currentPage="$store.state.fails.currentPage" />
     </section>
   </section>
 </template>
@@ -43,10 +44,17 @@ export default {
           value:'history',
         },
       ],
-      info:[]
+      info:[],
+      isShowDialog:false
     }
   },
   methods:{
+    getResetMsg(e){
+      this.isShowDialog = e.isShowDialog
+    },
+    getShowDialog(e){
+      this.isShowDialog = e.isShowDialog
+    },
     chooseItem(index){
       this.current = index
       let type = index == 0 ? 'now' : 'history' 

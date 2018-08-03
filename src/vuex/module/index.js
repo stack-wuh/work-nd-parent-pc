@@ -1,9 +1,8 @@
-import { resolve } from "url";
-
 const state = {
   data:[],
   total:0,
-  info:{}
+  info:{},
+  currentPage:1
 }
 
 const actions = {
@@ -25,7 +24,7 @@ const actions = {
   },
 
   /**
-   * 获取详情
+   * 获取假期详情
    */
   getInfoDetail({commit},status){
     $http('holidayNotice/getNoticeInfo.do',status).then(res=>{
@@ -34,13 +33,25 @@ const actions = {
          resolve()
       })
     })
+  },
+  /**
+   * 获取消息详情
+   */
+  getNoticeInfo({commit},status){
+    $http('opinionManage/getFeedInfo.do',status).then(res=>{
+      return new Promise((resolve,reject)=>{
+        commit('setInfoDetail',res)
+        resolve()
+      })
+    })
   }
 }
 
 const mutations = {
   setIndexData(state,status){
-    state.data = status.data.list
-    state.total = status.data.total
+    state.data = (status.data) && status.data.list
+    state.total = (status.data) && status.data.total
+    state.currentPage = (status.data) && status.data.pageNum
   },
 
   /**
