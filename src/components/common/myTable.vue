@@ -1,10 +1,12 @@
 <template>
   <section class="wrapper">
     <section class="wrap">
-      <el-table border stripe :data="info">
-        <el-table-column v-if="$route.path === '/check'" type="selection" align="center" width='80'></el-table-column>
+      <el-table @selection-change="handelSelectionChange" border stripe ref="mytable" :data="info">
+        <el-table-column v-if="$route.path === '/check' && !type" type="selection" align="center" width='80'></el-table-column>
+        <el-table-column v-if="isShowSelection" type="selection" align="center" width='80'></el-table-column>
+        <el-table-column v-if="$route.path === '/check' && type" type="index" align="center" width='80' label="序号"></el-table-column>
         <el-table-column v-if="$route.path === '/letter' || $route.path == '/index/message'" type="index" align="center" label="序号" width='80'></el-table-column>
-        <el-table-column v-if="item.type === 'expand'" type="expand" align='center' v-for="(item,index) in dataList" :key="index" :label="item.key">
+        <el-table-column v-if="item.type === 'expand' && !isShowSelection" type="expand" align='center' v-for="(item,index) in dataList" :key="index" :label="item.key">
           <template slot-scope="scope">
             <el-table :data="scope.row.scoreInfoList" border stripe>
               <el-table-column align="center" v-if="sub.type === 'default'" v-for="(sub,sin) in subDataList" :key="sin" :label="sub.key" :prop="sub.prop"></el-table-column>
@@ -18,6 +20,10 @@
           </template>
         </el-table-column>
       </el-table>
+     <div v-if="isShowSelection" style="margin-top:15px;">
+      <el-button @click="reset" size="small" type="" >取消</el-button>
+      <el-button @click="submit" size="small" type="primary" >确定</el-button>
+     </div>
     </section>
   </section>
 </template>
@@ -25,7 +31,7 @@
 
 <script>
 export default {
-  props:['info','type'],
+  props:['info','type','isShowSelection'],
   data(){
     return{
       data:[
@@ -89,7 +95,7 @@ export default {
             },
             {
               key:'专业班级',
-              prop:'klass',
+              prop:'classes',
               type:'default'
             },
             {
@@ -104,12 +110,12 @@ export default {
             },
             {
               key:'迟到',
-              prop:'later',
+              prop:'late',
               type:'default'
             },
             {
               key:'旷课',
-              prop:'out',
+              prop:'cut',
               type:'default'
             },
             {
@@ -119,7 +125,7 @@ export default {
             },
             {
               key:'出勤率',
-              prop:'check_rota',
+              prop:'rate',
               type:'default'
             },
             {
@@ -128,7 +134,7 @@ export default {
               list:[
                 {
                   text:'查看',
-                  click:'',
+                  click:this.handleClickWithDialog,
                   type:'text'
                 }
               ]
@@ -492,6 +498,90 @@ export default {
               type:'default'
             }
           ]
+        },
+        {
+          type:'check1',
+          data:[
+            {
+              key:'序号',
+              type:'index',
+            },
+            {
+              key:'发起类型',
+              type:'default',
+              prop:'type',
+            },
+            {
+              key:'发起时间',
+              type:'default',
+              prop:'fomTime',
+            },
+            {
+              key:'发起次数',
+              type:'default',
+              prop:'state',
+            },
+            {
+              key:'发起教师',
+              type:'default',
+              prop:'teacherName',
+            }
+          ]
+        },
+        {
+          type:'check2',
+          data:[
+            {
+              key:'标题',
+              type:'default',
+              prop:'title',
+            },
+            {
+              key:'发起时间',
+              type:'default',
+              prop:'fomTime',
+            },
+            {
+              key:'发起次数',
+              type:'default',
+              prop:'state',
+            },
+            {
+              key:'发起教师',
+              type:'default',
+              prop:'teacherName'
+            }
+          ]
+        },
+        {
+          type:'check3',
+          data:[
+            {
+              key:'标题',
+              type:'default',
+              prop:'title',
+            },
+            {
+              key:'发起类型',
+              type:'default',
+              prop:'type',
+            },
+            {
+              key:'发起时间',
+              type:'default',
+              prop:'fomTime',
+            },
+            {
+              key:'发起次数',
+              type:'default',
+              prop:'state',
+            },
+            {
+              key:'发起教师',
+              type:'default',
+              prop:'teacherName'
+            }
+          ]
         }
       ],
       subData:[
@@ -520,7 +610,8 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      checkList:[]
     }
   },
   computed:{
@@ -543,6 +634,29 @@ export default {
   },
   methods:{
     /**
+     * 表格选中变化
+     */
+    handelSelectionChange(e){
+      this.checkList = e
+    },
+    submit(){
+      this.$prompt('请编辑内容','编辑',{
+        confirmButtonText:'确定',
+        cancelButtonText:'取消',
+      }).then(({value})=>{
+        let numbers = JSON.stringify(this.checkList)
+        this.$store.dispatch('handleSendNotice',{numbers:numbers,content:value}).then((res)=>{
+          setTimeout(()=>{
+            this.reset()
+          },1000)
+        })
+      })
+    },
+    reset(){
+      this.$refs.mytable.clearSelection()
+      this.$emit('getResetMsg',{isShowDialog:false})
+    },
+    /**
      * 更新 -- 发布页 -- 招生简章
      */
     handleTumpToEditForGuide(e){
@@ -556,7 +670,7 @@ export default {
       switch(RootPath){
         case '/index/leave' : path = '/index/leave/detail' , query = {id:e.row.id} 
           break;
-        case '/index/message' : path = '/index/message/detail'
+        case '/index/message' : path = '/index/message/detail' , query = {id:e.row.id}
           break;
         case '/guide/list' : path = '/guide/list/detail' , query = {id:e.row.id}
           break;
@@ -610,12 +724,6 @@ export default {
       }).catch(()=>{
         _g.toastMsg('warning','操作已取消')
       })
-      // this.$store.dispatch(_del,data).then(()=>{
-      //   this.$store.dispatch(_get)
-      // })
-      // this.$store.dispatch('delSettingAvatars',{id:e.row.id}).then(()=>{
-      //   this.$store.dispatch('getSettingsAvatars',{currPageNo:1})
-      // })
     },
   },
   created(){
