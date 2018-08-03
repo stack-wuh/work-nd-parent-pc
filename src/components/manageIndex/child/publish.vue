@@ -64,6 +64,16 @@ export default {
             this.$http('noticeManage/addHolidayNotice.do',this.form).then(res=>{
               let error = res.status == 0 ? 'success' : 'error'
               _g.toastMsg(error,res.msg)
+              if(res.status == 0){
+                setTimeout(()=>{
+                  this.editor.txt.clear()
+                  this.form = {
+                    title:'',
+                    typeId:'',
+                    content:''
+                  }
+                },1000)
+              }
             })
           }
         }else{

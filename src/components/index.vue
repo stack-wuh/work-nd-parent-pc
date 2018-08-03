@@ -18,8 +18,8 @@
     </wrap-top>
     <section class="content">
       <my-table :info="$store.state.index.data" class="my-table"></my-table>
-      <my-bottom class="my-bottom" :total="$store.state.index.total" />
-    </section>
+      <my-bottom class="my-bottom" :total="$store.state.index.total" :currentPage="$store.state.index.currentPage" />
+    </section> 
   </section>
 </template>
 
@@ -75,30 +75,6 @@ export default {
           path:'/index/message'
         }
       ],
-      info:[
-        {
-          number:'123123',
-          name:'shadow',
-          post:'教授',
-          klasses:'aa,bb,cc',
-          phone:'182828282',
-          qq:'asdasd',
-          weixin:'asdasd',
-          email:'asdasd@qq.com',
-          location:'湖北省武汉市洪山区XXXXX',
-        },
-        {
-          number:'123123',
-          name:'shadow',
-          post:'教授',
-          klasses:'aa,bb,cc',
-          phone:'182828282',
-          qq:'asdasd',
-          weixin:'asdasd',
-          email:'asdasd@qq.com',
-          location:'湖北省武汉市洪山区XXXXX',
-        },
-      ]
     }
   },
   methods:{

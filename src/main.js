@@ -19,6 +19,7 @@ Vue.prototype.$store = store
 Vue.prototype.$message = Message
 Vue.prototype.$http = apiMethods
 Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$prompt = MessageBox.prompt
 
 window.axios = axios
 window._g = _g

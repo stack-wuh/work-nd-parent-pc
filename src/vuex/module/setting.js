@@ -1,14 +1,14 @@
-import { resolve } from "path";
-
 const state = {
   data:[],
-  total:0
+  total:0,
+  currentPage:1,
 }
 
 const mutations = {
   setSettingsAvatars(state,status){
-    state.data = status.data.list
-    state.total = status.data.total
+    state.data = (status.data) && status.data.list
+    state.total = (status.data) && status.data.total
+    state.currentPage = (status.data) && status.data.pageNum
   }
 }
 

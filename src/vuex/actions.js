@@ -11,7 +11,9 @@ const actions ={
    */
   indexDataFetch({commit,state},status){
     $http('teacherManage/getTeacherList.do',state.search).then(res=>{
-      commit('setIndexData',res)
+        commit('setIndexData',res)
+    }).catch(err=>{
+      _g.toastMsg('error',res.msg)
     })
   },
 

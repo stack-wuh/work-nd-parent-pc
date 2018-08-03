@@ -67,7 +67,7 @@ export default {
           list:[
             {
               type:'button',
-              click:'',
+              click:this.handleClickOpenDialog,
               text:'通知家长'
             },
             {
@@ -84,12 +84,41 @@ export default {
             {
               type:'button',
               text:'通知家长',
-              click:''
+              click:this.handleClickOpenDialog
             },
             {
               type:'select',
               placeholder:'出勤率',
-              data:['aa','bb','vv'],
+              data:[
+                {
+                  key:'0-10',
+                  value:'0-10',
+                },
+                {
+                  key:'10-20',
+                  value:'10-20',
+                },
+                {
+                  key:'20-30',
+                  value:'20-30',
+                },
+                {
+                  key:'40-50',
+                  value:'40-50',
+                },
+                {
+                  key:'60-70',
+                  value:'60-70',
+                },
+                {
+                  key:'80-90',
+                  value:'80-90',
+                },
+                {
+                  key:'90-100',
+                  value:'90-100',
+                },
+              ],
               value:''
             },
           ]
@@ -114,13 +143,15 @@ export default {
     handleClassChange(e){
       this.$store.dispatch('getSearchDataChange',{classes:e}).then(()=>{
         switch(this.RootPath){
-          case 'student' : this.$store.dispatch('getStudentList')
+          case 'student' : this.$store.dispatch('getStudentList',{currPageNo:1})
             break;
-          case 'fails' : this.$store.dispatch('getFailsList')
+          case 'fails' : this.$store.dispatch('getFailsList',{currPageNo:1})
             break;
-          case 'grade' : this.$store.dispatch('getStudentScore')
+          case 'grade' : this.$store.dispatch('getStudentScore',{currPageNo:1})
             break;
-          case 'index' : this.$store.dispatch('indexDataFetch')
+          case 'index' : this.$store.dispatch('indexDataFetch',{currPageNo:1})
+            break;
+          case 'check' : this.$store.dispatch('getStudentCheckList',{currPageNo:1})
             break;
         }
       })
@@ -128,13 +159,15 @@ export default {
     confirmInput(e){
       this.$store.dispatch('getSearchDataChange',{keyWord:e}).then(()=>{
         switch(this.RootPath){
-          case 'student' : this.$store.dispatch('getStudentList')
+          case 'student' : this.$store.dispatch('getStudentList',{currPageNo:1})
             break;
-          case 'fails' : this.$store.dispatch('getFailsList')
+          case 'fails' : this.$store.dispatch('getFailsList',{currPageNo:1})
             break;
-          case 'grade' : this.$store.dispatch('getStudentScore')
+          case 'grade' : this.$store.dispatch('getStudentScore',{currPageNo:1})
             break;
-          case 'index' : this.$store.dispatch('indexDataFetch')
+          case 'index' : this.$store.dispatch('indexDataFetch',{currPageNo:1})
+            break;
+          case 'check' : this.$store.dispatch('getStudentCheckList',{currPageNo:1})
             break;
         }
       })
@@ -148,26 +181,21 @@ export default {
       let search = {
         isRelevance:this.searchList && this.searchList[1] && this.searchList[1].value,
         failCount:this.searchList && this.searchList[1] && this.searchList[1].value,
-        type:'now',
+        rate:this.searchList && this.searchList[1] && this.searchList[1].value,
+        // type:'now',
       }
       this.$store.dispatch('getSearchDataChange',search).then(()=>{
         switch(this.RootPath){
-          case 'student' : this.$store.dispatch('getStudentList')
+          case 'student' : this.$store.dispatch('getStudentList',{currPageNo:1})
             break;
-          case 'fails' : this.$store.dispatch('getFailsList')
+          case 'fails' : this.$store.dispatch('getFailsList',{currPageNo:1})
+            break;
+          case 'check' : this.$store.dispatch('changeStudentCheckRate',{min:search.rate.split('-')[0],max:search.rate.split('-')[1],currPageNo:1}).then(()=>{
+              this.$store.dispatch('getStudentCheckList')
+          })
             break;
         }
       })
-      // switch(this.RootPath){
-      //   case 'student1' : this.$store.dispatch('getStudentList',search) 
-      //     break;
-      //   case 'grade' : this.$store.dispatch('getStudentScore',search)
-      //     break; 
-      //   case 'fails' : this.$store.dispatch('getFailsList',search)
-      //     break;
-      //   case 'index' : this.$store.dispatch('indexDataFetch',search)
-      //     break;
-      // }
     }
   },
   created(){
