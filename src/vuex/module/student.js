@@ -46,6 +46,14 @@ const actions = {
         resolve()
       })
     })
+  },
+
+  /**
+   * 导出学生信息 
+   */
+  export2Excel({commit,rootState},status){
+    let {classes,keyWord,isRelevance} = rootState.search
+    location.href = rootPath + `studentManage/outStudentExcel.do?classes=${encodeURI(encodeURI(classes))}&isRelevance=${encodeURI(isRelevance)}&keyWrod=${encodeURI(encodeURI(keyWord))}`
   }
 }
 
