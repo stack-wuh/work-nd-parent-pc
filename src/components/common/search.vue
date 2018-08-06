@@ -52,7 +52,7 @@ export default {
           list:[
             {
               type:'button',
-              click:'',
+              click:this.handleClickOpenDialogWithState,
               text:'导入成绩'
             },
             {
@@ -141,9 +141,7 @@ export default {
      * 单击导出表格
      */
     handleExport2Excel(){
-      // location.href = rootPath + '/studentManage/outStudentExcel.do'
-      // this.$store.dispatch('export2Excel')
-      // this.$http('studentManage/outStudentExcel.do')
+      this.$store.dispatch('export2Excel')
     },
 
     /**
@@ -200,7 +198,9 @@ export default {
     handleClickOpenDialog(){
       this.$emit('getShowDialog',{isShowDialog:true})
     },
-    
+    handleClickOpenDialogWithState(){
+      this.$emit('getShowDialogWithState',{isShowDialog:true})
+    },
     /**
      * select事件 -- 搜索其他类型内容
      */
