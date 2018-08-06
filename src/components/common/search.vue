@@ -36,7 +36,7 @@ export default {
             {
               type:'button',
               text:'导出表格',
-              click:''
+              click:this.handleExport2Excel
             },
             {
               type:'select',
@@ -137,9 +137,26 @@ export default {
     }
   },
   methods:{
+    /**
+     * 单击导出表格
+     */
+    handleExport2Excel(){
+      // location.href = rootPath + '/studentManage/outStudentExcel.do'
+      // this.$store.dispatch('export2Excel')
+      // this.$http('studentManage/outStudentExcel.do')
+    },
+
+    /**
+     * 选择专业 -- select事件
+     */
     handleMajorChange(){
       this.$store.dispatch('getClassesByMajor',{major:this.major})
     },
+
+    /**
+     * 选择班级 -- select事件
+     * 获取班级内信息
+     */
     handleClassChange(e){
       this.$store.dispatch('getSearchDataChange',{classes:e}).then(()=>{
         switch(this.RootPath){
@@ -156,6 +173,10 @@ export default {
         }
       })
     },
+
+    /**
+     * input-change事件 -- 关键字搜索
+     */
     confirmInput(e){
       this.$store.dispatch('getSearchDataChange',{keyWord:e}).then(()=>{
         switch(this.RootPath){
@@ -173,10 +194,16 @@ export default {
       })
     },
 
+    /**
+     * 向上传递事件-- 打开diaolog对话框
+     */
     handleClickOpenDialog(){
       this.$emit('getShowDialog',{isShowDialog:true})
     },
-
+    
+    /**
+     * select事件 -- 搜索其他类型内容
+     */
     fetchDataByRootName(){  
       let search = {
         isRelevance:this.searchList && this.searchList[1] && this.searchList[1].value,
