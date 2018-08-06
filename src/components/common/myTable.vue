@@ -335,11 +335,11 @@ export default {
                 key:'操作',
                 type:'button',
                 list:[
-                  {
-                    text:'查看发送对象',
-                    type:'text',
-                    click:''
-                  },
+                  // {
+                  //   text:'查看发送对象',
+                  //   type:'text',
+                  //   click:''
+                  // },
                   {
                     text:'查看详情',
                     type:'text',
