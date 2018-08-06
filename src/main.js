@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 
 import {Button,Select,Option,Input,Table,TableColumn, Tree , Pagination,Form,FormItem,Progress,Message,Loading,Dialog,CheckboxGroup,
-  Checkbox,MessageBox,Switch} from 'element-ui'
+  Checkbox,MessageBox,Switch,Upload} from 'element-ui'
 import '../static/default-theme/index.css'
 import '../static/css/base.less'
 import '../static/css/font/iconfont.css'
@@ -33,6 +33,7 @@ window.rootPath = '/parents_guide/'
 
 /**
  * 路由守卫
+ * 验证用户登录
  */
 router.beforeEach((to,from,next)=>{ 
   if(to.name !== 'login'){
@@ -63,6 +64,7 @@ Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 Vue.use(Tree)
 Vue.use(Switch)
+Vue.use(Upload)
 
 Vue.config.productionTip = false
 
