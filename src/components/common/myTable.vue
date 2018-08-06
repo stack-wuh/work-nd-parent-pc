@@ -240,6 +240,16 @@ export default {
               type:'default',
             },
             {
+              key:'发布教师',
+              prop:'teacherName',
+              type:'default',
+            },
+            {
+              key:'发布对象',
+              prop:'studentName',
+              type:'default',
+            },
+            {
               key:'发布时间',
               prop:'createTime',
               type:'default',
@@ -248,11 +258,11 @@ export default {
               key:'操作',
               type:'button',
               list:[
-                {
-                  text:'查看发送对象',
-                  type:'text',
-                  click:''
-                },
+                // {
+                //   text:'查看发送对象',
+                //   type:'text',
+                //   click:''
+                // },
                 {
                   text:'查看详情',
                   type:'text',
