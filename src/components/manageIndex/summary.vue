@@ -19,7 +19,7 @@
           </div>
           <div class="third">
             <span>已上传人数:{{item.success}}人</span>
-            <span>总管辖人数:{{item.fail}}人</span>
+            <span>总管辖人数:{{item.total}}人</span>
           </div>
         </section>
       </section>
@@ -28,7 +28,7 @@
       <p>发送前请确保期末考试成绩,告家长书的已上传人数等于中管辖人数!</p>
       <section class="btm-list">
         <el-button size="small">取消</el-button>
-        <el-button size="small" type="primary">发送</el-button>
+        <el-button @click="submit" size="small" type="primary">发送</el-button>
       </section>
     </section>
   </section>
@@ -46,44 +46,54 @@ export default {
         {
           title:'NO.1期末考试成绩',
           subTitle:'',
-          rate:50,
-          success:10,
-          fail:10,
+          rate:($store.state.index.info.scoreCount / $store.state.index.info.stuCount) * 100 | 0,
+          success:$store.state.index.info.scoreCount,
+          total:$store.state.index.info.stuCount,
           color:'#9D79FF',
           path:'grade'
         },
         {
           title:'NO.2等级证书',
           subTitle:'(此部分内容由学生通过学生端上传,教师在家时段审核后展示)',
-          rate:60,
-          success:10,
-          fail:10,
+          rate:($store.state.index.info.certCount / $store.state.index.info.stuCount) * 100 | 0,
+          success:$store.state.index.info.certCount,
+          total:$store.state.index.info.stuCount,
           color:'#990000',
         },
         {
           title:'NO.3个人履历',
           subTitle:'(此部分内容由学生通过学生端上传,教师在家时段审核后展示)',
-          rate:40,
-          success:10,
-          fail:10,
+          rate:($store.state.index.info.pontCount / $store.state.index.info.stuCount) * 100 | 0,
+          success:$store.state.index.info.pontCount,
+          total:$store.state.index.info.stuCount,
           color:'#A4DB74',
         },
         {
           title:'NO.4告家长书',
           subTitle:'',
-          rate:10,
-          success:10,
-          fail:10,
+          rate:($store.state.index.info.summaryCount / $store.state.index.info.stuCount) * 100 | 0,
+          success:$store.state.index.info.summaryCount,
+          total:$store.state.index.info.stuCount,
           color:'#FF9900',
           path:'letter'
         },
-      ]
+      ],
     }
   },
   methods:{
     jump2other(path){
       this.$router.push({name:path})
+    },
+    submit(){
+      this.$store.dispatch('pushSummary').then((err)=>{
+        setTimeout(() => {
+          
+        }, 1000);
+      })
     }
+  },
+  created(){
+    this.$store.dispatch('getSummary')
   }
 }
 </script>

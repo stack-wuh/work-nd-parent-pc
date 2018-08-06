@@ -8,12 +8,13 @@
         </el-select>
       </span>
     </wrap-top>
-    <search @getShowDialog="getShowDialog" type="grade" />
+    <search @getShowDialogWithState='getShowDialogWithState' @getShowDialog="getShowDialog" type="grade" />
     <section class="content">
      <my-table @getDetailInfo="getDetailInfo" @getRowDataWithDialog="getRowDataWithDialog" :info="$store.state.grade.data" />
      <my-bottom :total="+$store.state.grade.total" :currentPage="$store.state.grade.currentPage" />
     </section>
-
+    
+    <!--添加新成绩-->
     <el-dialog :title="title" :visible.sync="dialogVisible">
       <el-form label-width="120px" :model="myForm" ref="myForm">
         <el-form-item v-for="(item,index) in form.info" :key="index" :label="item.label" :rules="item.rules" :prop="item.prop">
@@ -35,6 +36,21 @@
       <div slot="footer">
         <el-button @click="reset" type="" size="small">取消</el-button>
         <el-button :disabled="!btnDisabled" @click="submit" type="primary" size="small">确定</el-button>
+      </div>
+    </el-dialog>
+    <!--导入成绩-->
+    <el-dialog title="导入成绩" :visible.sync="dialogVisibleImport">
+      <p>若没有模板请先下载后,导入学生成绩!<el-button type="" size="small" style="margin-left:20px;">下载模板</el-button></p>
+      <el-upload
+        :action="uploadUrl"
+        name="upload_file"
+        :on-success="handleUploadSuccess"
+      > 
+        <el-button type="primary" size="small">导入学生成绩</el-button>   
+      </el-upload>
+      <div slot="footer">
+        <el-button @click="handleReset" size="small" type="">取消</el-button>
+        <el-button @click="handleSubmit" size="small" type="primary">确定</el-button>
       </div>
     </el-dialog>
   </section>
@@ -95,7 +111,8 @@ export default {
   data(){
     return{
       grade:'',
-      dialogVisible:false,
+      dialogVisible:false,  // 添加--更改 -- dialog
+      dialogVisibleImport:false,  // 导入新成绩 -- dialog
       baseList:baseList,
       baseObj:baseObj,
       form:{
@@ -270,10 +287,39 @@ export default {
         ]
       },
       btnDisabled:true,
-      title:'编辑学生成绩'
+      title:'编辑学生成绩',
+      uploadUrl:rootPath + 'ScoreManage/inScoreList.do'
     }
   },
   methods:{
+    handleUploadSuccess(res){
+      let error = res.status == 0 ? 'success' : 'error'
+      _g.toastMsg(error,res.msg)
+      if(res.status == 0){
+        setTimeout(()=>{
+          this.handleReset()
+          this.$store.dispatch('getStudentScore')
+        },1000)
+      }
+    },
+    /**
+     * 导入成绩 -- 取消
+     */
+    handleReset(){
+      this.dialogVisibleImport = false
+    },
+    /**
+     * 导入成绩 -- 确定
+     */
+    handleSubmit(){
+      this.dialogVisibleImport = false
+    },
+    /**
+     * 导入成绩
+     */
+    getShowDialogWithState(e){
+      this.dialogVisibleImport = e.isShowDialog
+    },
     /**
      * 获取学生信息列表
      */
