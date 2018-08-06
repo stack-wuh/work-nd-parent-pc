@@ -5,13 +5,17 @@
       <header class="header">
         <h3>{{info && info.title}}</h3>
         <h3 v-if="navTitle == '我的消息>'">待回复消息</h3>
-        <time>{{info && info.createTime}}</time>
+        <h3 v-if="navTitle == '告家长书>'">{{info.quarter || '告家长书'}}</h3>
+        <p v-if="navTitle == '告家长书>'">
+          <span class="tips">发布教师: </span>{{info.teacherName}}
+        </p>
+        <time>发布时间: {{info && info.createTime}}</time>
       </header>
       <article v-html="info && info.content"></article>
     </section>
     <section class="btn-list">
       <el-button @click="backPage" type="" size="small">返回上一页</el-button>
-      <el-button @click="submit" type="primary" size="small">回复</el-button>
+      <el-button v-if="RootPath == '/index/message/detail'" @click="submit" type="primary" size="small">回复</el-button>
     </section>
   </section>  
 </template>
@@ -74,6 +78,8 @@ export default {
         break;
       case '/index/message/detail' : this.$store.dispatch('getNoticeInfo',query).then(()=>{setTimeout(()=>{this.info = this.$store.state.index.info},100)})
         break; 
+      case '/letter/detail' : this.$store.dispatch('getLetterInfo',query).then(()=>{setTimeout(()=>{this.info = this.$store.state.letter.info},100)})
+        break;
     }
     console.log(this.info)
   } 
@@ -103,6 +109,12 @@ export default {
         margin-top:15px;
         margin-bottom:20px;
         color: #999;
+      }
+      p{
+        margin-top:10px;
+        span.tips{
+          color: #999;
+        }
       }
     }
   }
