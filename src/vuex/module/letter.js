@@ -1,6 +1,9 @@
+import { resolve } from "url";
+
 const state = {
   list:[],
   data:[],
+  info:{},
   total:0
 }
 
@@ -11,7 +14,11 @@ const mutations = {
   setLetterHistory(state,status){
     state.data = status.data.list
     state.total = status.data.total
-  }
+  },
+
+  setLetterInfo(state,status){
+    state.info = status.data && status.data
+  },
 }
 
 const actions = {
@@ -43,7 +50,19 @@ const actions = {
     $http('noticeManage/getNoticeList.do',rootState.search).then(res=>{
       commit('setLetterHistory',res)
     })
-  }
+  },
+
+  /**
+   * 获取告家长书详情
+   */
+  getLetterInfo({commit,rootState},status){
+    $http('SummaryManage/getSummaryInfo.do',status).then(res=>{
+      return new Promise((resolve,reject)=>{
+        commit('setLetterInfo',res)
+        resolve()
+      })
+    })
+  },
 }
 
 const getters = {
