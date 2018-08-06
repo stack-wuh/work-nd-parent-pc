@@ -44,6 +44,34 @@ const actions = {
         resolve()
       })
     })
+  },
+
+  /**
+   * 获取期末总结    
+   */
+  getSummary({commit}){
+    $http('SummaryManage/finalStatistics.do').then(res=>{
+      return new Promise((resolve,reject)=>{
+        commit('setSummary',res)
+        resolve()
+      })
+    })
+  },
+
+  /**
+   * 推送期末总结到家长端
+   */
+  pushSummary({commit}){
+    $http('SummaryManage/pushFinalSummary.do').then(res=>{
+      return new Promise((resolve,reject)=>{
+        if(res.status == 0){
+          _g.toastMsg('success',res.msg)
+          resolve()
+        }else{
+          reject()
+        }
+      })
+    })
   }
 }
 
@@ -66,9 +94,14 @@ const mutations = {
   setWillBackNotice(state,status){
     state.data = status.data.list
     state.total = status.data.total
-  }
+  },
 
-
+  /**
+   * 设置期末总结详情
+   */
+  setSummary(state,status){
+    state.info = status.data && status.data
+  },
 }
 
 const getters = {
