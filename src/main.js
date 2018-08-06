@@ -31,6 +31,22 @@ window.$http = apiMethods
 window.rootPath = '/parents_guide/'
 
 
+/**
+ * 路由守卫
+ */
+router.beforeEach((to,from,next)=>{ 
+  if(to.name !== 'login'){
+    $http('manageUser/checkLogin.do').then(res=>{
+      if(res.status == 10){
+        router.push({name:'login'})
+      }
+    })
+    next()
+  }else{
+    next()
+  }
+})
+
 Vue.use(Button)
 Vue.use(Select)
 Vue.use(Option)
