@@ -1,5 +1,5 @@
 <template>
-    <section class="wrapper">
+    <section class="wrapper login">
       <div class="img-box"></div>
       <div class="form-area">
         <h3>能动学院新闻公告管理平台</h3>
@@ -96,7 +96,7 @@ export default {
       line-height:24px;
     }
     .my-input{
-      width:400px;
+      width:360px;
       div.input-bg{
         width:50px;
         height:38px;
@@ -110,7 +110,7 @@ export default {
       }
     }
     .my-button{
-      width:400px;
+      width:360px;
     }
   }
 }
